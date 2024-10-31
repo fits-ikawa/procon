@@ -1,0 +1,10 @@
+{
+    "Paiza starting template": {
+        "scope": "python",
+        "prefix": "paiza",
+        "body": [
+            "input_line = input()",
+            "print(\"XXXXXX\")",
+        ],
+    },
+}

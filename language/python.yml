@@ -1,0 +1,3 @@
+solver_file: "solve.py"
+solver_retry_file: "solve_retry.py"
+command: "python {solver}"

@@ -1,0 +1,11 @@
+.DS_Store
+.python-version
+
+.vscode/**/*
+!.vscode/*.code-snippets
+
+paiza
+stash
+*.out
+
+bigcase.txt

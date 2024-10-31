@@ -1,0 +1,4 @@
+# ちゃんと動作確認してません！
+solver_file: "solve.rs"
+solver_retry_file: "solve_retry.rs"
+command: "rustc {solver} -o {solver.stem}.out && ./{solver.stem}.out"
