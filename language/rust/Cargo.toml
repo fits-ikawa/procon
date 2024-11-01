@@ -1,0 +1,10 @@
+[package]
+name = "solver"
+edition = "2021"
+
+[[bin]]
+name="solve"
+path="solve.rs"
+
+[dependencies]
+regex = "=1"

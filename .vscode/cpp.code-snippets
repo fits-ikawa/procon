@@ -1,0 +1,17 @@
+{
+    "Paiza template": {
+        "scope": "cpp",
+        "prefix": "paiza",
+        "body": [
+            "#include <iostream>",
+            "using namespace std;",
+            "",
+            "int main(void){",
+            "    string str;",
+            "    getline(cin, str);",
+            "    cout << \"XXXXXX\" << endl;",
+            "    return 0;",
+            "}",
+        ],
+    }
+}

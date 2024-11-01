@@ -8,4 +8,6 @@ paiza
 stash
 *.out
 
+tmp
+
 bigcase.txt

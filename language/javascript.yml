@@ -1,3 +1,3 @@
 solver_file: "solve.js"
 solver_retry_file: "solve_retry.js"
-command: "node {solver}"
+run_command: "node {solver}"

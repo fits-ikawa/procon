@@ -1,0 +1,11 @@
+{
+    "Paiza template": {
+        "scope": "rust",
+        "prefix": "paiza",
+        "body": [
+            "fn main() {",
+            "    println!(\"XXXXXX\");",
+            "}",
+        ],
+    }
+}

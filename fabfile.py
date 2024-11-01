@@ -1,7 +1,9 @@
 import os
+import shutil
 import re
 import hashlib
 import yaml
+import tempfile
 from pathlib import Path
 
 from invoke import task, run
@@ -36,12 +38,24 @@ def load_language_config(language):
 
 def do_test(
     basedir,
+    tmpdir,
     language_config,
     solver_file,
     cases_file,
 ):
     solver = Path(basedir, solver_file)
     cases = Path(basedir, cases_file)
+
+    # ビルドコマンドがあれば実行
+    if "build_command" in language_config:
+        build_cmd = language_config["build_command"].format(
+            workdir=basedir, tmpdir=tmpdir, solver=solver
+        )
+        try:
+            run(build_cmd, echo=True)
+        except UnexpectedExit:
+            print("Build failed.")
+            return
 
     # テストケースを読み込む
     blocks = re.split(r"\n{2,}", open(cases, "r").read())
@@ -91,8 +105,8 @@ def do_test(
         print("----------------")
         try:
             # スクリプト実行
-            cmd = (language_config["command"] + " <<EOF\n{feed}EOF\n").format(
-                solver=solver, feed=feed
+            cmd = (language_config["run_command"] + " <<EOF\n{feed}EOF\n").format(
+                workdir=basedir, tmpdir=tmpdir, solver=solver, feed=feed
             )
             result = run(cmd, timeout=TIMEOUT_SEC)
             if answer.strip().upper() == "#DONTCARE":
@@ -121,12 +135,14 @@ def do_test(
 
 
 class AutoTestHandler(PatternMatchingEventHandler):
-    def __init__(self, basedir, language_config, targets):
+    def __init__(self, basedir, tmpdir, language_config, targets):
         super().__init__(targets)
         self.basedir = basedir
+        self.tmpdir = tmpdir
         self.filehash = {}
         self.language_config = language_config
         self.targets = targets
+        print(targets)
 
     def on_modified(self, event):
         # ファイルの内容変更がある場合のみテストを実行する
@@ -142,7 +158,7 @@ class AutoTestHandler(PatternMatchingEventHandler):
         hr = ("=-" * (len(msg) // 2)) + "="
         print(f"\n{hr}\n{msg}\n")
 
-        do_test(self.basedir, self.language_config, *self.targets)
+        do_test(self.basedir, self.tmpdir, self.language_config, *self.targets)
 
         print(f'Watching "{self.basedir}" ...')
         print("cmd >> ", end="", flush=True)
@@ -155,6 +171,10 @@ def procon(_, language, path, retry=False):
 
     language_config = load_language_config(language)
     global_config = load_global_config()
+
+    if retry and "solver_retry_file" not in language_config:
+        print(f"{language} doesn't support retry.")
+        return
 
     # --retry オプションを付けるとソルバを別名のファイルにする。
     # 問題を解き直したい場合などに使用する。
@@ -172,19 +192,26 @@ def procon(_, language, path, retry=False):
     solver.touch()
     cases.touch()
 
-    # VSCode でファイルを開く
-    if global_config.get("open_in_vscode", False):
-        run(f"code {solver}")
-        run(f"code {cases}")
+    with tempfile.TemporaryDirectory(dir="tmp") as tmpdir:
+        if "extra_files" in language_config:
+            # 言語別の追加ファイルをコピー
+            for src, dst in language_config["extra_files"]:
+                shutil.copy(src, dst.format(workdir=basedir, tmpdir=tmpdir))
 
-    watch(path, solver_file, cases_file, language_config)
+        # VSCode でファイルを開く
+        if global_config.get("open_in_vscode", False):
+            run(f"code {solver}")
+            run(f"code {cases}")
+
+        watch(path, solver_file, cases_file, language_config, tmpdir)
 
 
-def watch(path, solver_file, cases_file, language_config):
+def watch(path, solver_file, cases_file, language_config, tmpdir):
     basedir = Path(path)
     observer = Observer()
     observer.schedule(
-        AutoTestHandler(basedir, language_config, [solver_file, cases_file]), basedir
+        AutoTestHandler(basedir, tmpdir, language_config, [solver_file, cases_file]),
+        basedir,
     )
 
     print(f'Start watching "{basedir}" ...')
@@ -210,10 +237,22 @@ def watch(path, solver_file, cases_file, language_config):
                     # bigcase.txt というファイルに生成したケースを保存する
                     gencase.touch()
                     run(f"python {gencase} >{bigcase}", echo=True)
+
+                    # ビルドコマンドがあれば実行
+                    if "build_command" in language_config:
+                        build_cmd = language_config["build_command"].format(
+                            workdir=basedir, tmpdir=tmpdir, solver=solver
+                        )
+                        try:
+                            run(build_cmd, echo=True)
+                        except UnexpectedExit:
+                            print("Build failed.")
+                            continue
+
                     run(
-                        (language_config["command"] + f" <{bigcase}").format(
-                            solver=solver
-                        ),
+                        (
+                            language_config["run_command"] + f" <{bigcase.resolve()}"
+                        ).format(workdir=basedir, solver=solver, tmpdir=tmpdir),
                         echo=True,
                     )
 
