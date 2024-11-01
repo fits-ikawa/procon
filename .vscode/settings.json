@@ -1,4 +1,23 @@
 {
-    "files.trimFinalNewlines": true,
-    "files.trimTrailingWhitespace": true
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "python.defaultInterpreterPath": "./.venv/bin/python",
+  "[python]": {
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.ruff": "explicit",
+      "source.fixAll.ruff": "explicit"
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.tabSize": 4,
+    "editor.wordBasedSuggestions": "off",
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+  },
+  "editor.renderWhitespace": "all",
 }
