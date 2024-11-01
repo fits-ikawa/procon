@@ -1,6 +1,3 @@
 solver_file: "solve.rs"
-extra_files: [
-  ["language/rust/Cargo.toml", "{tmpdir}/Cargo.toml"],
-]
-build_command: "cp {solver} {tmpdir} && cd {tmpdir} && cargo build --bin solve"
+build_command: "cp language/rust/Cargo.toml {tmpdir} && cp {solver} {tmpdir} && cd {tmpdir} && cargo build --bin solve"
 run_command: "cd {tmpdir} && target/debug/solve"
