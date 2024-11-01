@@ -11,7 +11,12 @@ Paiza や AtCoder などのオンラインジャッジのコーディングを�
 ```sh
 pip install fabric watchdog pyyaml
 ```
-- JavaScript でコーディングする場合、Node がインストールされている
+- JavaScript でコーディングする場合、Node.js がインストールされている
+- Rust でコーディングする場合、Rust がインストールされている
+- C++ でコーディングする場合、build-essential がインストールされている
+  - `sudo apt update && sudo apt install build-essential`
+
+現状ではコンテナ化など行っておらず、私用したい言語の処理系をローカル環境に直接インストールしておく必要があります。各言語のインストール方法は `WSL Ubuntu Node.js インストール` のようなキーワードで検索してみてください。
 
 ## 導入方法
 WSL 上の任意のディレクトリに移動し、このリポジトリを clone します

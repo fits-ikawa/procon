@@ -1,4 +1,6 @@
-# ちゃんと動作確認してません！
 solver_file: "solve.rs"
-solver_retry_file: "solve_retry.rs"
-command: "rustc {solver} -o {solver.stem}.out && ./{solver.stem}.out"
+extra_files: [
+  ["language/rust/Cargo.toml", "{tmpdir}/Cargo.toml"],
+]
+build_command: "cp {solver} {tmpdir} && cd {tmpdir} && cargo build --bin solve"
+run_command: "cd {tmpdir} && target/debug/solve"
