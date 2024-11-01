@@ -33,6 +33,8 @@ git clone https://github.com/fits-ikawa/procon.git
 fab procon [使用言語] [作業ディレクトリ]
 ```
 
+- 対応言語: `python` `javascript` `rust` `cpp`
+
 例えば JavaScript で Paiza の B010 問題に取り組むなら、
 - `fab procon javascript work/paiza/b/b010`
 
