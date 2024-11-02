@@ -7,6 +7,9 @@
 paiza
 stash
 *.out
+target
+Cargo.lock
+Cargo.toml
 
 tmp
 

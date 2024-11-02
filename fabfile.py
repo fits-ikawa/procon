@@ -1,10 +1,12 @@
 import os
+import sys
 import shutil
 import re
 import hashlib
 import yaml
 import tempfile
 from pathlib import Path
+import importlib.util
 
 from invoke import task, run
 from invoke.exceptions import UnexpectedExit, CommandTimedOut
@@ -213,6 +215,21 @@ def watch(path, solver_file, cases_file, language_config, tmpdir):
         basedir,
     )
 
+    # 言語別の追加処理を実行（開始時のフック）
+    hooks_module = None
+    if "hooks" in language_config:
+        hooks_path = language_config["hooks"]
+        module_name = Path(hooks_path).stem
+
+        spec = importlib.util.spec_from_file_location(module_name, hooks_path)
+        hooks_module = importlib.util.module_from_spec(spec)
+        sys.modules[module_name] = hooks_module
+        spec.loader.exec_module(hooks_module)
+
+        on_start = getattr(hooks_module, "on_start", None)
+        if on_start is not None:
+            on_start(Path(__file__).parent, basedir, tmpdir, solver_file, cases_file)
+
     print(f'Start watching "{basedir}" ...')
     observer.start()
 
@@ -270,4 +287,11 @@ def watch(path, solver_file, cases_file, language_config, tmpdir):
         observer.unschedule_all()
         observer.stop()
         observer.join()
+
+        # 言語別の追加処理を実行（終了時のフック）
+        if hooks_module is not None:
+            on_exit = getattr(hooks_module, "on_exit", None)
+            if on_exit is not None:
+                on_exit(Path(__file__).parent, basedir, tmpdir, solver_file, cases_file)
+
         print("Done.")
