@@ -8,3 +8,4 @@ path="solve.rs"
 
 [dependencies]
 regex = "=1"
+proconio = "0.4.5"

@@ -1,3 +1,4 @@
 solver_file: "solve.rs"
-build_command: "cp language/rust/Cargo.toml {tmpdir} && cp {solver} {tmpdir} && cd {tmpdir} && cargo build --bin solve"
-run_command: "cd {tmpdir} && target/debug/solve"
+hooks: "language/rust/hooks.py"
+build_command: "cd {workdir} && cargo build --bin solve"
+run_command: "cd {workdir} && target/debug/solve"
