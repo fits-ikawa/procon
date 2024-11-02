@@ -142,7 +142,6 @@ class AutoTestHandler(PatternMatchingEventHandler):
         self.filehash = {}
         self.language_config = language_config
         self.targets = targets
-        print(targets)
 
     def on_modified(self, event):
         # ファイルの内容変更がある場合のみテストを実行する
