@@ -44,17 +44,8 @@ def on_exit(rootdir, workdir, tmpdir, solver_file, cases_file):
             settings = json.load(f)
 
         # settings.json からプロジェクトパス（作業ディレクトリ）を削除
-        linked_projects = settings.get("rust-analyzer.linkedProjects", [])
-        cargo_abs_path = str(cargo_path.resolve())
-        if cargo_abs_path in linked_projects:
-            linked_projects = list(
-                filter(lambda x: x != cargo_abs_path, linked_projects)
-            )
-
-        if linked_projects:
-            settings["rust-analyzer.linkedProjects"] = linked_projects
-        else:
-            # 空になるならキーごと削除
+        if "rust-analyzer.linkedProjects" in settings:
+            # キーごと削除する
             del settings["rust-analyzer.linkedProjects"]
 
         with SETTINGS_FILE.open("w", encoding="utf-8") as f:
