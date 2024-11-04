@@ -1,0 +1,4 @@
+solver_file: "solve.ts"
+solver_retry_file: "solve_retry.ts"
+build_command: "node_modules/.bin/tsc {solver} --target ESNext --moduleResolution node --module commonjs --noEmitOnError --pretty true --outDir {workdir}/dist"
+run_command: "node {workdir}/dist/{solver.stem}.js"
