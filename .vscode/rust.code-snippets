@@ -7,5 +7,35 @@
             "    println!(\"XXXXXX\");",
             "}",
         ],
+    },
+    "AtCoder template": {
+        "scope": "rust",
+        "prefix": "atcoder",
+        "body": [
+            "#![allow(unused_imports)]"
+            "use itertools::*;"
+            "use maplit::*;"
+            "use proconio::{marker::*, *};"
+            "use std::{cmp::*, collections::*};"
+            "",
+            "#[allow(unused_macros)]",
+            "macro_rules! debug {",
+            "    ($($$a:expr),* $(,)*) => {",
+            "        #[cfg(debug_assertions)]",
+            "        eprintln!(concat!($(\"| \", stringify!($$a), \"={:?} \"),*, \"|\"), $(&$$a),*);",
+            "    };",
+            "}",
+            "",
+            "fn main() {",
+            "    input! {",
+            "        n: usize, m: usize,",
+            "        vec: [usize; n],",
+            "        mat: [[usize; m]; n],",
+            "        mat: [(usize, usize); n],",
+            "    }",
+            "",
+            "    println!(\"{}\", 0);",
+            "}",
+        ],
     }
 }

@@ -7,4 +7,72 @@
             "print(\"XXXXXX\")",
         ],
     },
+    "AtCoder skelton: Basic": {
+        "scope": "python",
+        "prefix": "atbase",
+        "body": [
+            "from collections import defaultdict",
+            "",
+            "def lmap(fn, seq): return list(map(fn, seq))",
+            "def tmap(fn, seq): return tuple(map(fn, seq))",
+            "def lfilter(fn, seq): return list(filter(fn, seq))",
+            "",
+            "def solve():",
+            "    inf = float('inf')",
+            "    mod = 10**9 + 7",
+            "",
+            "    N, M = map(int, input().split())",
+            "    N = int(input())",
+            "    S = input().strip()",
+            "    A = lmap(int, input().split())",
+            "    mat = [tmap(int, input().split()) for _ in range(N)]",
+            "    vec = [int(input()) for _ in range(N)]",
+            "",
+            "    print(0)",
+            "",
+            "solve()",
+        ],
+    },
+    "AtCoder skelton: Bisect": {
+        "scope": "python",
+        "prefix": "atbisect",
+        "body": [
+            "left = 0",
+            "right = ...",
+            "while right - left > 1:",
+            "    mid = (right + left) // 2",
+            "    if ...:",
+            "        right = mid",
+            "    else:",
+            "        left = mid",
+        ],
+    },
+    "AtCoder import: Bisect": {
+        "scope": "python",
+        "prefix": "iatbisect",
+        "body": [
+            "from bisect import bisect, bisect_left, insort, insort_left",
+        ],
+    },
+    "AtCoder import: Queue": {
+        "scope": "python",
+        "prefix": "iatqeueu",
+        "body": [
+            "from collections import deque",
+        ],
+    },
+    "AtCoder import: Heap queue": {
+        "scope": "python",
+        "prefix": "iatheapq",
+        "body": [
+            "from heapq import heappush, heappop",
+        ],
+    },
+    "AtCoder import: Random": {
+        "scope": "python",
+        "prefix": "iatrand",
+        "body": [
+            "from random import randint, choices, random, randrange, sample, choice",
+        ],
+    }
 }
