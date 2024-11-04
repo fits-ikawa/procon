@@ -11,7 +11,7 @@ Paiza や AtCoder などのオンラインジャッジのコーディングを�
 ```sh
 pip install fabric watchdog pyyaml
 ```
-- JavaScript でコーディングする場合、Node.js がインストールされている
+- JavaScript, TypeScript でコーディングする場合、Node.js がインストールされている
 - Rust でコーディングする場合、Rust がインストールされている
 - C++ でコーディングする場合、build-essential がインストールされている
   - `sudo apt update && sudo apt install build-essential`
@@ -25,6 +25,13 @@ WSL 上の任意のディレクトリに移動し、このリポジトリを clo
 git clone https://github.com/fits-ikawa/procon.git
 ```
 
+TypeScript でコーディングする場合は、次のコマンドも実行してください。
+
+```sh
+cd procon
+npm install typescript @types/node
+```
+
 ## 使い方
 ### 1. VSCode で WSL にアタッチし、リポジトリのディレクトリを開きます
 ### 2. Paiza や AtCoder で、取り組みたい問題のページを開きます
@@ -33,7 +40,7 @@ git clone https://github.com/fits-ikawa/procon.git
 fab procon [使用言語] [作業ディレクトリ]
 ```
 
-- 対応言語: `python` `javascript` `rust` `cpp`
+- 対応言語: `python` `javascript` `typescript` `rust` `cpp`
 
 例えば JavaScript で Paiza の B010 問題に取り組むなら、
 - `fab procon javascript work/paiza/b/b010`
@@ -157,6 +164,9 @@ TLE
 
 ### 6. 完成したコードをオンラインジャッジのサイトに提出します
 ジャッジに失敗した場合は 5 に戻ります。
+
+#### Paiza に TypeScript のコードを提出する
+Paiza は TypeScript に直接対応していないので、`作業ディレクトリ/dist` に出力されている、変換後の JavaScript の内容を提出してください。
 
 ### 7. ツールを終了します
 コンソールの `cmd >>` というプロンプトに `q` `Enter` と入力するか、Ctrl+C でツールを終了できます。別の問題に取り組みたい場合は 2 に戻ってください。

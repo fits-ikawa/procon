@@ -1,9 +1,11 @@
 {
     "Paiza template": {
-        "scope": "javascript",
+        "scope": "typescript",
         "prefix": "paiza",
         "body": [
-            "const lines = require(\"fs\").readFileSync(\"/dev/stdin\", \"utf8\").split(\"\\n\");",
+            "import * as fs from \"fs\";",
+            "",
+            "const lines = fs.readFileSync(\"/dev/stdin\", \"utf8\").split(\"\\n\");",
             "const N = Number(lines[0]);",
             "",
             "console.log(0);",

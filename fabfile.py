@@ -15,7 +15,6 @@ from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
 TIMEOUT_SEC = 10
-LANGUAGE_CONFIG_DIR = "language"
 
 
 def load_global_config():
@@ -27,7 +26,7 @@ def load_global_config():
 
 
 def load_language_config(language):
-    config_path = Path(LANGUAGE_CONFIG_DIR, f"{language}.yml")
+    config_path = Path(f"language/{language}.yml")
     if not config_path.exists():
         raise FileNotFoundError(
             f"Configuration file for language '{language}' not found."
@@ -51,7 +50,7 @@ def do_test(
     # ビルドコマンドがあれば実行
     if "build_command" in language_config:
         build_cmd = language_config["build_command"].format(
-            workdir=basedir, tmpdir=tmpdir, solver=solver
+            rootdir=Path(__file__).parent, workdir=basedir, tmpdir=tmpdir, solver=solver
         )
         try:
             run(build_cmd, echo=True)
@@ -108,7 +107,11 @@ def do_test(
         try:
             # スクリプト実行
             cmd = (language_config["run_command"] + " <<EOF\n{feed}EOF\n").format(
-                workdir=basedir, tmpdir=tmpdir, solver=solver, feed=feed
+                rootdir=Path(__file__).parent,
+                workdir=basedir,
+                tmpdir=tmpdir,
+                solver=solver,
+                feed=feed,
             )
             result = run(cmd, timeout=TIMEOUT_SEC)
             if answer.strip().upper() == "#DONTCARE":
@@ -257,7 +260,10 @@ def watch(path, solver_file, cases_file, language_config, tmpdir):
                     # ビルドコマンドがあれば実行
                     if "build_command" in language_config:
                         build_cmd = language_config["build_command"].format(
-                            workdir=basedir, tmpdir=tmpdir, solver=solver
+                            rootdir=Path(__file__).parent,
+                            workdir=basedir,
+                            tmpdir=tmpdir,
+                            solver=solver,
                         )
                         try:
                             run(build_cmd, echo=True)
@@ -268,7 +274,12 @@ def watch(path, solver_file, cases_file, language_config, tmpdir):
                     run(
                         (
                             language_config["run_command"] + f" <{bigcase.resolve()}"
-                        ).format(workdir=basedir, solver=solver, tmpdir=tmpdir),
+                        ).format(
+                            rootdir=Path(__file__).parent,
+                            workdir=basedir,
+                            tmpdir=tmpdir,
+                            solver=solver,
+                        ),
                         echo=True,
                     )
 
