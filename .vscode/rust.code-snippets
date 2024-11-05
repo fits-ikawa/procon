@@ -12,17 +12,18 @@
         "scope": "rust",
         "prefix": "atcoder",
         "body": [
-            "#![allow(unused_imports)]"
-            "use itertools::*;"
-            "use maplit::*;"
-            "use proconio::{marker::*, *};"
-            "use std::{cmp::*, collections::*};"
+            "#![allow(unused_imports)]",
+            "use itertools::*;",
+            "use maplit::*;",
+            "use proconio::{marker::*, *};",
+            "use std::{cmp::*, collections::*};",
+            "use superslice::*;",
             "",
             "#[allow(unused_macros)]",
             "macro_rules! debug {",
-            "    ($($$a:expr),* $(,)*) => {",
+            "    ($(\\$a:expr),* $(,)*) => {",
             "        #[cfg(debug_assertions)]",
-            "        eprintln!(concat!($(\"| \", stringify!($$a), \"={:?} \"),*, \"|\"), $(&$$a),*);",
+            "        eprintln!(concat!($(\"| \", stringify!(\\$a), \"={:?} \"),*, \"|\"), $(&\\$a),*);",
             "    };",
             "}",
             "",

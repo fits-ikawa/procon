@@ -29,7 +29,7 @@ fn main() {
             dp[i][j] = dp[i - 1][j];
         }
         for j in num..=w {
-            dp[i][j] = dp[i - 1][j].min(dp[i - 1][j - num].checked_add(1).unwrap_or(usize::MAX));
+            dp[i][j] = dp[i - 1][j].min(dp[i - 1][j - num].saturating_add(1));
         }
     }
 

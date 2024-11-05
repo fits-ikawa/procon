@@ -1,0 +1,24 @@
+3 2
+aab
+
+1
+
+5 3
+zzyyx
+
+16
+
+10 5
+abcwxyzyxw
+
+440640
+
+3 1
+abc
+
+0
+
+10 10
+abcwxyzyxw
+
+#dontcare
