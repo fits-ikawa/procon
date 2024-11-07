@@ -14,6 +14,7 @@
         "body": [
             "#![allow(unused_imports)]",
             "use itertools::*;",
+            "use itertools_num::*;",
             "use maplit::*;",
             "use proconio::{marker::*, *};",
             "use std::collections::*;",

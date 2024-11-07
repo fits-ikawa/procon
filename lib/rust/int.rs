@@ -1,3 +1,48 @@
+fn is_prime(n: u64) -> bool {
+    if n < 2 {
+        return false;
+    } else if n <= 3 {
+        return true;
+    } else if n % 2 == 0 || n % 3 == 0 {
+        return false;
+    }
+
+    for i in (5..=(n as f64).sqrt().floor() as u64).step_by(6) {
+        if n % i == 0 || n % (i + 2) == 0 {
+            return false;
+        }
+    }
+
+    true
+}
+
+fn primes_table(n: u64) -> Vec<bool> {
+    let n = n as usize;
+
+    if n < 2 {
+        return vec![false; n + 1];
+    }
+
+    let mut table = vec![true; n + 1];
+    table[0] = false;
+    table[1] = false;
+
+    for i in 2..=(n as f64).sqrt().floor() as usize {
+        if table[i] {
+            for j in ((i * i)..=n).step_by(i) {
+                table[j] = false;
+            }
+        }
+    }
+
+    table
+}
+
+fn primes(n: u64) -> Vec<u64> {
+    let table = primes_table(n);
+    (2..=n).filter(|&i| table[i as usize]).collect()
+}
+
 fn prime_factors(n: u64) -> Vec<u64> {
     if n <= 1 {
         return vec![];
@@ -16,7 +61,7 @@ fn prime_factors(n: u64) -> Vec<u64> {
         n /= 3;
     }
 
-    for i in (5..(n as f64).powf(0.5).floor() as u64).step_by(6) {
+    for i in (5..=(n as f64).sqrt().floor() as u64).step_by(6) {
         while n % i == 0 {
             factors.push(i);
             n /= i;
