@@ -16,7 +16,7 @@
             "use itertools::*;",
             "use maplit::*;",
             "use proconio::{marker::*, *};",
-            "use std::{cmp::*, collections::*};",
+            "use std::collections::*;",
             "use superslice::*;",
             "",
             "#[allow(unused_macros)]",
