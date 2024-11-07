@@ -241,7 +241,8 @@ def watch(path, solver_file, cases_file, language_config, tmpdir):
     bigcase = Path(basedir, "bigcase.txt")
 
     try:
-        while cmd := input("cmd >> "):
+        while True:
+            cmd = input("cmd >> ")
             try:
                 if cmd == "g":
                     # テストケース生成スクリプト（Python）を実行する。
