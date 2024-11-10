@@ -1,0 +1,14 @@
+abcde
+abedc
+
+3
+
+abcde
+abcdefg
+
+6
+
+keyence
+keyence
+
+0
