@@ -27,37 +27,29 @@ fn main() {
 
     h.sort();
 
-    let acc1 = h
-        .iter()
-        .enumerate()
-        .map(|(i, &hi)| if i % 2 == 0 { hi } else { -hi })
-        .cumsum::<isize>()
+    let acc1 = std::iter::once(0)
+        .chain(
+            h.iter()
+                .enumerate()
+                .map(|(i, &hi)| if i % 2 == 0 { hi } else { -hi })
+                .cumsum::<isize>(),
+        )
         .collect_vec();
 
-    let acc2 = h
-        .iter()
-        .enumerate()
-        .map(|(i, &hi)| if i % 2 == 0 { -hi } else { hi })
-        .cumsum::<isize>()
+    let acc2 = std::iter::once(0)
+        .chain(
+            h.iter()
+                .enumerate()
+                .map(|(i, &hi)| if i % 2 == 0 { -hi } else { hi })
+                .cumsum::<isize>(),
+        )
         .collect_vec();
 
     let mut ans = isize::MAX;
 
     for wi in w {
         let t_pos = h.lower_bound(&wi);
-        let diff = if t_pos == 0 {
-            // 先生が先頭
-            -wi + acc1[n - 1]
-        } else if t_pos == n {
-            // 先生が末尾
-            acc2[n - 1] + wi
-        } else if t_pos % 2 == 0 {
-            // 先生が中間の偶数番目
-            acc2[t_pos - 1] - wi + acc1[n - 1] - acc1[t_pos - 1]
-        } else {
-            // 先生が中間の奇数番目
-            acc2[t_pos - 1] + wi + acc1[n - 1] - acc1[t_pos - 1]
-        };
+        let diff = acc2[t_pos] + if t_pos % 2 == 0 { -wi } else { wi } + acc1[n] - acc1[t_pos];
         ans = ans.min(diff);
     }
 
