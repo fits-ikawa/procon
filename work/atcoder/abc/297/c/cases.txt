@@ -1,0 +1,15 @@
+2 3
+TTT
+T.T
+
+PCT
+T.T
+
+3 5
+TTT..
+.TTT.
+TTTTT
+
+PCT..
+.PCT.
+PCTPC
