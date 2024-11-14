@@ -20,6 +20,41 @@ macro_rules! debug {
 #[allow(clippy::needless_range_loop)]
 #[fastout]
 fn main() {
+    // BFS で解く
+    input! {
+        n: usize, d: isize,
+        xy: [(isize, isize); n],
+    }
+
+    let d = d * d;
+    let mut todo = VecDeque::new();
+    let mut seen = vec![false; n];
+    todo.push_back(0);
+    seen[0] = true;
+
+    while !todo.is_empty() {
+        let i = todo.pop_front().unwrap();
+        let (ix, iy) = xy[i];
+        for j in 0..n {
+            if seen[j] {
+                continue;
+            }
+            let (jx, jy) = xy[j];
+            if (jx - ix).pow(2) + (jy - iy).pow(2) <= d {
+                seen[j] = true;
+                todo.push_back(j);
+            }
+        }
+    }
+
+    for i in 0..n {
+        println!("{}", if seen[i] { "Yes" } else { "No" });
+    }
+}
+
+#[allow(dead_code)]
+fn solve() {
+    // Union-Find で解く
     input! {
         n: usize, d: isize,
         xy: [(isize, isize); n],
