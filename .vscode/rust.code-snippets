@@ -43,5 +43,12 @@
             "    println!(\"{}\", 0);",
             "}",
         ],
+    },
+    "Derive for hashable": {
+        "scope": "rust",
+        "prefix": "hashable",
+        "body": [
+            "#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]",
+        ],
     }
 }
