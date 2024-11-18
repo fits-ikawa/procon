@@ -12,6 +12,15 @@ fn modpow(base: u64, exp: u64, modulus: u64) -> u64 {
     result
 }
 
+fn modulo(a: i64, m: i64) -> i64 {
+    let result = a % m;
+    if result < 0 {
+        result + m
+    } else {
+        result
+    }
+}
+
 fn is_prime(n: u64) -> bool {
     if n < 2 {
         return false;
