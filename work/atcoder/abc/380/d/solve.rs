@@ -53,8 +53,8 @@ fn main() {
 
 fn changecase(c: char) -> char {
     if c.is_uppercase() {
-        c.to_lowercase().next().unwrap()
+        c.to_ascii_lowercase()
     } else {
-        c.to_uppercase().next().unwrap()
+        c.to_ascii_uppercase()
     }
 }
