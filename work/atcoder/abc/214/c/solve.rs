@@ -17,7 +17,7 @@ macro_rules! debug {
 }
 
 #[allow(clippy::needless_range_loop)]
-// #[fastout]
+#[fastout]
 fn main() {
     // 優先度付きキューで受け渡しをシミュレートして解く
     input! {

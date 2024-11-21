@@ -1,0 +1,11 @@
+5
+
+AABA
+
+14
+
+BBABBAAAB
+
+51568815
+
+#dontcare
