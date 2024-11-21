@@ -50,5 +50,12 @@
         "body": [
             "#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]",
         ],
+    },
+    "Use for petgraph": {
+        "scope": "rust",
+        "prefix": "usepetgraph",
+        "body": [
+            "use petgraph::{algo::*, graph::*, prelude::*, visit::*, *};",
+        ],
     }
 }
