@@ -1,4 +1,4 @@
-from random import randint, choices, random, randrange, sample, choice
+from random import randint
 
 N = 10
 A = randint(-100, 100)

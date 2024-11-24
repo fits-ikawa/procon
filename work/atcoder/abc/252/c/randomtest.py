@@ -1,4 +1,4 @@
-from random import randint, choices, random, randrange, sample, choice, shuffle
+from random import shuffle
 
 N = 2
 S = []
@@ -38,7 +38,5 @@ def solve(N, S):
 print(N)
 for reel in S:
     print("".join(map(str, reel)))
-
 print()
-
 solve(N, S)
