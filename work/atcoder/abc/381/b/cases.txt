@@ -1,0 +1,11 @@
+aabbcc
+
+Yes
+
+aab
+
+No
+
+zzzzzz
+
+No

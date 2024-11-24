@@ -1,0 +1,22 @@
+4 2
+abi
+aef
+bc
+acg
+
+3
+
+2 2
+a
+b
+
+0
+
+5 2
+abpqxyz
+az
+pq
+bc
+cy
+
+7
