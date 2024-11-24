@@ -9,8 +9,6 @@ path="solve.rs"
 [dependencies]
 ac-library-rs = "=0.1.1"
 memoise = "=0.3.2"
-counter = "=0.5.7"
-tap = "=1.0.1"
 num = "=0.4.1"
 petgraph = "=0.6.3"
 regex = "=1.9.1"
