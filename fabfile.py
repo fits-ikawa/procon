@@ -15,6 +15,7 @@ from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
 TIMEOUT_SEC = 10
+RANDOM_TEST_N = 100
 
 
 def load_global_config():
@@ -97,9 +98,10 @@ def do_test(
             feed = re.sub(r"^#PICK\n", "", feed, flags=re.IGNORECASE | re.MULTILINE)
 
         # 解答
-        answer = (
-            re.sub(r"^#BLANK", "", blocks[i + 1].strip(), flags=re.IGNORECASE) + "\n"
-        )
+        answer = blocks[i + 1].strip() + "\n"
+
+        if answer.upper().startswith("#BLANK"):
+            answer = ""
 
         print(f"==== case {(i // 2) + 1} ====")
         print(answer.strip())
@@ -243,6 +245,10 @@ def watch(path, solver_file, cases_file, language_config, tmpdir):
     try:
         while True:
             cmd = input("cmd >> ")
+            split = cmd.split()
+            if split:
+                cmd, params = split[0], split[1:]
+
             try:
                 if cmd == "g":
                     # テストケース生成スクリプト（Python）を実行する。
@@ -283,6 +289,94 @@ def watch(path, solver_file, cases_file, language_config, tmpdir):
                         ),
                         echo=True,
                     )
+
+                elif cmd == "r":
+                    # ランダムケース生成スクリプト（Python）を連続で実行し、
+                    # その出力を、一定数 AC するか WA が出るまでソルバに食わせ続ける。
+                    # WA（または実行時エラー）が出たらそのケースを表示する。
+                    # スクリプトは 1 回分の正しい入力と出力のペアを
+                    # 空行を挟んで標準出力に出すように作る。
+                    # N が小さいランダムな入力を生成し、全探索などナイーブな方法で
+                    # 正解を求めるなどする。
+                    randomtest = Path(basedir, "randomtest.py")
+                    randomtest.touch()
+
+                    # 回数指定のパース
+                    if params:
+                        try:
+                            random_test_n = int(params[0])
+                        except (ValueError, TypeError):
+                            random_test_n = RANDOM_TEST_N
+                    else:
+                        random_test_n = RANDOM_TEST_N
+
+                    # ソルバのビルドコマンドがあれば先に実行
+                    if "build_command" in language_config:
+                        build_cmd = language_config["build_command"].format(
+                            rootdir=Path(__file__).parent,
+                            workdir=basedir,
+                            tmpdir=tmpdir,
+                            solver=solver,
+                        )
+                        try:
+                            run(build_cmd, echo=True)
+                        except UnexpectedExit:
+                            print("Build failed.")
+                            continue
+
+                    n = 1
+
+                    while True:
+                        # ランダムケース生成スクリプト実行
+                        print(f"==== random case {n} ====")
+                        result = run(f"python {randomtest}")
+
+                        blocks = re.split(r"\n{2,}", result.stdout)
+                        if len(blocks) != 2:
+                            print("input-output pair mismatch\n")
+                            break
+
+                        feed, answer = blocks
+                        feed = feed + "\n"
+                        if answer.upper().startswith("#BLANK"):
+                            answer = ""
+
+                        try:
+                            # ソルバスクリプト実行
+                            print("----------------")
+                            cmd = (
+                                language_config["run_command"] + " <<EOF\n{feed}EOF\n"
+                            ).format(
+                                rootdir=Path(__file__).parent,
+                                workdir=basedir,
+                                tmpdir=tmpdir,
+                                solver=solver,
+                                feed=feed,
+                            )
+                            result = run(cmd)
+                            if result.stdout == answer:
+                                if n == random_test_n:
+                                    print()
+                                    print(f"All AC. [n={n}]")
+                                    break
+
+                                n = n + 1
+                                continue
+                            else:
+                                print()
+                                print(f"WA case found. [n={n}]")
+                                print("----------------")
+                                print(feed)
+                                print(answer)
+                                break
+
+                        except UnexpectedExit:
+                            print()
+                            print(f"Panic case found. [n={n}]")
+                            print("----------------")
+                            print(feed)
+                            print(answer)
+                            break
 
                 elif cmd == "q":
                     # 終了
