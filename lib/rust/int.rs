@@ -1,4 +1,4 @@
-fn modpow(base: u64, exp: u64, modulus: u64) -> u64 {
+fn mod_pow(base: u64, exp: u64, modulus: u64) -> u64 {
     let (mut base, mut exp) = (base, exp);
     let mut result = 1;
     base %= modulus;
@@ -18,6 +18,14 @@ fn modulo(a: i64, m: i64) -> i64 {
         result + m
     } else {
         result
+    }
+}
+
+fn div_ceil(a: i64, b: i64) -> i64 {
+    if (a < 0) == (b < 0) {
+        (a + b - 1) / b
+    } else {
+        a / b
     }
 }
 
