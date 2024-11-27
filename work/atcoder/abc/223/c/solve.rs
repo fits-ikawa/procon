@@ -39,7 +39,7 @@ fn main() {
             time += a / b;
             ans += a;
         } else {
-            ans += a * (total_time / 2.0 - time) / (a / b);
+            ans += b * (total_time / 2.0 - time);
             break;
         }
     }
