@@ -1,3 +1,30 @@
+fn factorial(n: usize) -> usize {
+    (1..=n).product()
+}
+
+fn combination(n: usize, r: usize) -> usize {
+    assert!(n >= r);
+    let r = r.min(n - r);
+    let mut result = 1;
+    for i in 0..r {
+        result = result * (n - i) / (i + 1);
+    }
+    result
+}
+
+fn repeated_combination(n: usize, r: usize) -> usize {
+    combination(n + r - 1, r)
+}
+
+fn permutation(n: usize, r: usize) -> usize {
+    assert!(n >= r);
+    (n - r + 1..=n).product()
+}
+
+fn repeated_permutation(n: usize, r: usize) -> usize {
+    n.pow(r as u32)
+}
+
 fn mod_pow(base: u64, exp: u64, modulus: u64) -> u64 {
     let (mut base, mut exp) = (base, exp);
     let mut result = 1;
