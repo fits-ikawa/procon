@@ -1,0 +1,50 @@
+4 4
+bbed
+abcd
+abed
+fbed
+
+Yes
+
+2 5
+abcde
+abced
+
+No
+
+8 4
+fast
+face
+cast
+race
+fact
+rice
+nice
+case
+
+Yes
+
+4 1
+a
+b
+c
+d
+
+Yes
+
+
+4 1
+a
+b
+a
+b
+
+Yes
+
+4 1
+a
+b
+a
+a
+
+No

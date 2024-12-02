@@ -8,6 +8,7 @@ path="solve.rs"
 
 [dependencies]
 ac-library-rs = "=0.1.1"
+counter = "=0.5.7"
 memoise = "=0.3.2"
 num = "=0.4.1"
 petgraph = "=0.6.3"

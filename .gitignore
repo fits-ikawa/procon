@@ -1,5 +1,6 @@
 .DS_Store
 .python-version
+__pycache__
 
 .vscode/**/*
 !.vscode/*.code-snippets
