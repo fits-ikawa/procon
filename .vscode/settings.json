@@ -15,5 +15,5 @@
     },
     "[cpp]": {
         "editor.tabSize": 4
-    },
+    }
 }
