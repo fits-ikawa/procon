@@ -2,15 +2,22 @@
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
     "[python]": {
+        "editor.tabSize": 4,
         "editor.defaultFormatter": "ms-python.black-formatter"
     },
     "[rust]": {
+        "editor.tabSize": 4,
         "editor.defaultFormatter": "rust-lang.rust-analyzer"
     },
     "[javascript]": {
+        "editor.tabSize": 2,
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[typescript]": {
+        "editor.tabSize": 2,
         "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[cpp]": {
+        "editor.tabSize": 4
     }
 }
