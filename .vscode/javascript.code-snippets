@@ -1,12 +1,25 @@
+
 {
-    "Paiza template": {
+    "Paiza starting template": {
         "scope": "javascript",
         "prefix": "paiza",
         "body": [
-            "const lines = require(\"fs\").readFileSync(\"/dev/stdin\", \"utf8\").split(\"\\n\");",
-            "const N = Number(lines[0]);",
+            "process.stdin.resume();",
+            "process.stdin.setEncoding('utf8');",
             "",
-            "console.log(0);",
+            "var lines = [];",
+            "var reader = require('readline').createInterface({",
+            "  input: process.stdin,",
+            "  output: process.stdout",
+            "});",
+            "",
+            "reader.on('line', (line) => {",
+            "  lines.push(line);",
+            "});",
+            "",
+            "reader.on('close', () => {",
+            "  console.log(lines[0]);",
+            "});",
         ],
     }
 }
