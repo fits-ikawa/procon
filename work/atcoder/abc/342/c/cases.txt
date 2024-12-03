@@ -1,0 +1,45 @@
+7
+atcoder
+4
+r a
+t e
+d v
+a r
+
+recover
+
+3
+abc
+4
+a a
+s k
+n n
+z b
+
+abc
+
+34
+supercalifragilisticexpialidocious
+20
+g c
+l g
+g m
+c m
+r o
+s e
+a a
+o f
+f s
+e t
+t l
+d v
+p k
+v h
+x i
+h n
+n j
+i r
+s i
+u a
+
+laklimamriiamrmrllrmlrkramrjimrial
