@@ -1,0 +1,25 @@
+3 5
+oooxx
+xooox
+xxooo
+
+2
+
+3 2
+oo
+ox
+xo
+
+1
+
+8 6
+xxoxxo
+xxoxxx
+xoxxxx
+xxxoxx
+xxoooo
+xxxxox
+xoxxox
+oxoxxo
+
+3
