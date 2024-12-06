@@ -26,6 +26,7 @@ fn main() {
 
     a.sort();
 
+    // 尺取り法（長さ m の最も多く含む要素を含む区間の、要素数）
     let mut ans = 0;
 
     let mut right = 0;

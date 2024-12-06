@@ -2,7 +2,9 @@
 use itertools::*;
 use itertools_num::*;
 use maplit::*;
+use num::integer::{Integer, Roots};
 use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
 use std::collections::*;
 use superslice::*;
 
@@ -14,28 +16,23 @@ macro_rules! debug {
     };
 }
 
+#[allow(clippy::needless_range_loop)]
+#[fastout]
 fn main() {
     input! {
-        n: usize,
+        n: usize, k: usize,
         mut a: [usize; n],
     }
 
-    // 尺取り法（単調増加の区間を数え上げ）
-    a.push(0);
+    a.sort();
+    a.dedup();
 
-    let mut right = 0;
-    let mut ans = 0;
+    let not_appear = a.upper_bound(&k);
+    let mut sum =  (1 + k) * k / 2;
 
-    for left in 0..n {
-        while a[right] < a[right + 1] {
-            right += 1;
-        }
-        ans += right - left + 1;
-
-        if left == right {
-            right += 1;
-        }
+    for &ai in &a[..not_appear] {
+        sum -= ai;
     }
 
-    println!("{}", ans);
+    println!("{}", sum);
 }

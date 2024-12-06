@@ -2,7 +2,9 @@
 use itertools::*;
 use itertools_num::*;
 use maplit::*;
+use num::integer::{Integer, Roots};
 use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
 use std::collections::*;
 use superslice::*;
 
@@ -14,28 +16,20 @@ macro_rules! debug {
     };
 }
 
+#[allow(clippy::needless_range_loop)]
+#[fastout]
 fn main() {
     input! {
         n: usize,
-        mut a: [usize; n],
+        ac: [(usize, usize); n],
     }
 
-    // 尺取り法（単調増加の区間を数え上げ）
-    a.push(0);
+    let mut min_a = hashmap!{};
 
-    let mut right = 0;
-    let mut ans = 0;
-
-    for left in 0..n {
-        while a[right] < a[right + 1] {
-            right += 1;
-        }
-        ans += right - left + 1;
-
-        if left == right {
-            right += 1;
-        }
+    for (a, c) in ac {
+        let value = min_a.entry(c).or_insert(usize::MAX);
+        *value = (*value).min(a);
     }
 
-    println!("{}", ans);
+    println!("{}", min_a.values().max().unwrap());
 }

@@ -28,6 +28,7 @@ fn main() {
 
     let sum = a.iter().sum::<usize>() * (n - 1);
 
+    // 尺取り法（和が 10^8 以上となるような組み合わせの数）
     let mut right = n;
     let mut count = 0;
 

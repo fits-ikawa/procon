@@ -24,6 +24,7 @@ fn main() {
         a: [usize; n],
     }
 
+    // 尺取り法（和が k 以下となるような区間の数）
     let mut right = 0;
     let mut sum = a[0];
     let mut count = 0;

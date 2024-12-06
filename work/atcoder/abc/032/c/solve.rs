@@ -25,23 +25,41 @@ fn main() {
         return;
     }
 
+    // 尺取り法（区間積が K 以下の最長区間）
     let mut right = 0;
-    let mut mult = 1;
+    let mut mult = s[0];
     let mut ans = 0;
 
     for left in 0..n {
-        while right < n && mult * s[right] <= k {
+        while right + 1 < n && mult * s[right + 1] <= k {
+            right += 1;
             mult *= s[right];
-            right += 1;
         }
-        ans = ans.max(right - left);
 
-        if left == right {
+        if mult <= k {
+            ans = ans.max(right - left + 1);
+        }
+        mult /= s[left];
+
+        if left == right && right + 1 < n {
             right += 1;
-        } else {
-            mult /= s[left];
+            mult = s[right];
         }
     }
+
+    // for left in 0..n {
+    //     while right < n && mult * s[right] <= k {
+    //         mult *= s[right];
+    //         right += 1;
+    //     }
+    //     ans = ans.max(right - left);
+
+    //     if left == right {
+    //         right += 1;
+    //     } else {
+    //         mult /= s[left];
+    //     }
+    // }
 
     println!("{}", ans);
 }

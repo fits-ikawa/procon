@@ -31,6 +31,7 @@ fn main() {
 
     for seq in seqs {
         // 見つけた連続列ごとに尺取り法で最長の 1122 数列を探す
+        // （重複しない要素からなる区間の最長）
         let mut right = 0;
         let mut nums = hashset! {seq[0]};
         for left in 0..seq.len() {

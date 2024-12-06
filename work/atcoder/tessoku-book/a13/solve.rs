@@ -24,6 +24,7 @@ fn main() {
         a: [usize; n],
     }
 
+    // 尺取り法（組み合わせの合計が k 以下）
     let mut right = 0;
     let mut count = 0;
 
