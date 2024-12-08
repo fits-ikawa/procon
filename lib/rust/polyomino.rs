@@ -38,6 +38,30 @@ pub mod mylib {
             }
         }
 
+        pub fn from_blocks(blocks: HashSet<(usize, usize)>) -> Self {
+            assert!(
+                !blocks.is_empty(),
+                "`blocks` must contain at least one element"
+            );
+
+            let mut max_x = 0;
+            let mut max_y = 0;
+
+            for &(x, y) in &blocks {
+                max_x = max_x.max(x);
+                max_y = max_y.max(y);
+            }
+
+            let height = max_x + 1;
+            let width = max_y + 1;
+
+            Polyomino {
+                blocks,
+                height,
+                width,
+            }
+        }
+
         pub fn empty(height: usize, width: usize) -> Self {
             Polyomino {
                 blocks: HashSet::new(),
