@@ -1,4 +1,4 @@
 solver_file: "solve.rs"
 hooks: "language/rust/hooks.py"
-build_command: "cd {workdir} && cargo build --bin solve"
+build_command: "cd {workdir} && cargo build --color always --bin solve"
 run_command: "cd {workdir} && target/debug/solve"
