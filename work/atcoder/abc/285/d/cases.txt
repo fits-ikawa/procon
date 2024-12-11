@@ -1,0 +1,21 @@
+2
+b m
+m d
+
+Yes
+
+3
+a b
+b c
+c a
+
+No
+
+5
+aaa bbb
+yyy zzz
+ccc ddd
+xxx yyy
+bbb ccc
+
+Yes
