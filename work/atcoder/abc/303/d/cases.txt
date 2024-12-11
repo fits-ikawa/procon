@@ -1,0 +1,14 @@
+1 3 3
+AAaA
+
+9
+
+1 1 100
+aAaAaA
+
+6
+
+1 2 4
+aaAaAaaAAAAaAaaAaAAaaaAAAAA
+
+40

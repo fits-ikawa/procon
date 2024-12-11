@@ -1,0 +1,20 @@
+2 3
+sns
+euk
+
+Yes
+
+2 2
+ab
+cd
+
+No
+
+5 7
+skunsek
+nukesnu
+ukeseku
+nsnnesn
+uekukku
+
+Yes
