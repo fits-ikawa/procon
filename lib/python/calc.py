@@ -1,8 +1,8 @@
-import math
+from math import *
 
 
 def fact(n: int) -> int:
-    return math.factorial(n)
+    return factorial(n)
 
 
 def comb(n: int, r: int) -> int:
@@ -20,7 +20,7 @@ def repcomb(n: int, r: int) -> int:
 
 def perm(n: int, r: int) -> int:
     assert n >= r, "n must be greater than or equal to r"
-    return math.prod(range(n - r + 1, n + 1))
+    return prod(range(n - r + 1, n + 1))
 
 
 def repperm(n: int, r: int) -> int:
