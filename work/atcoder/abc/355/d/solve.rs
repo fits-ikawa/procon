@@ -1,3 +1,90 @@
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[allow(clippy::needless_range_loop)]
+#[fastout]
+fn main() {
+    // 解説 AC
+    input! {
+        n: usize,
+        lr: [(usize, usize); n],
+    }
+
+    let mut ls = vec![];
+    let mut rs = vec![];
+
+    for (l, r) in lr {
+        ls.push(l);
+        rs.push(r);
+    }
+
+    ls.sort();
+    rs.sort();
+
+    let mut ans = n * (n - 1) / 2;
+    let mut j = 0;
+
+    for i in 0..n {
+        while rs[j] < ls[i] {
+            j += 1;
+        }
+        ans -= j;
+    }
+
+    println!("{}", ans);
+}
+
+#[allow(dead_code)]
+fn solve() {
+    input! {
+        n: usize,
+        lr: [(usize, usize); n],
+    }
+
+    let mut l2r = btreemap! {};
+
+    for (l, r) in lr {
+        (*l2r.entry(l).or_insert(vec![])).push(r);
+    }
+
+    let mut rlive = mylib::MultiBTreeSet::new();
+    let mut ans = 0;
+
+    for &left in l2r.keys() {
+        // 見終わった区間を捨てる
+        while !rlive.is_empty() && rlive.first().copied().unwrap() < left {
+            rlive.pop_first();
+        }
+
+        // 残っている区間と今回追加する区間の組み合わせ
+        ans += l2r[&left].len() * rlive.len();
+        // 今回追加する区間同士の組み合わせ
+        ans += l2r[&left].len() * (l2r[&left].len() - 1) / 2;
+
+        // 今回の区間を追加する
+        for &r in &l2r[&left] {
+            rlive.insert(r);
+        }
+    }
+
+    println!("{}", ans);
+}
+
 pub mod mylib {
     use std::collections::{btree_map, BTreeMap};
     use std::iter::{FlatMap, Repeat, Take};

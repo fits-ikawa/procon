@@ -1,0 +1,15 @@
+ABCACC
+
+5
+
+OOOOOOOO
+
+56
+
+XYYXYYXYXXX
+
+75
+
+BABBABBBAABABB
+
+#dontcare

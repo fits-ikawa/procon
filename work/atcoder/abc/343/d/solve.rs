@@ -1,3 +1,42 @@
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[allow(clippy::needless_range_loop)]
+#[fastout]
+fn main() {
+    input! {
+        n: usize, t: usize,
+        ab: [(Usize1, usize); t],
+    }
+
+    use mylib::MultiBTreeSet;
+
+    let mut score = vec![0; n];
+    let mut score_set = MultiBTreeSet::from_iter(score.iter().copied());
+
+    for (a, b) in ab {
+        score_set.remove(&score[a]);
+        score[a] += b;
+        score_set.insert(score[a]);
+        println!("{}", score_set.len_unique());
+    }
+}
+
 pub mod mylib {
     use std::collections::{btree_map, BTreeMap};
     use std::iter::{FlatMap, Repeat, Take};

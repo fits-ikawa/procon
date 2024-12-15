@@ -19,6 +19,47 @@ macro_rules! debug {
 #[allow(clippy::needless_range_loop)]
 #[fastout]
 fn main() {
+    // DFS で部分木の頂点数をカウント
+    input! {
+        n: usize,
+        uv: [(Usize1, Usize1); n-1],
+    }
+
+    let mut adj = vec![vec![]; n];
+
+    for (u, v) in uv {
+        adj[u].push(v);
+        adj[v].push(u);
+    }
+
+    let ans = std::iter::once(1)
+        .chain(
+            adj[0]
+                .iter()
+                .map(|&next| dfs(next, 0, &adj))
+                .sorted()
+                .collect_vec(),
+        )
+        .take(adj[0].len())
+        .sum::<usize>();
+
+    println!("{}", ans);
+}
+
+fn dfs(cur: usize, parent: usize, adj: &[Vec<usize>]) -> usize {
+    let mut ret = 1;
+
+    for &next in &adj[cur] {
+        if next != parent {
+            ret += dfs(next, cur, adj);
+        }
+    }
+
+    ret
+}
+
+#[allow(dead_code)]
+fn solve1() {
     // UnionFind で部分木の頂点数をカウント
     input! {
         n: usize,
@@ -48,8 +89,8 @@ fn main() {
 }
 
 #[allow(dead_code)]
-fn solve() {
-    // BFS で部分木の頂点数をカウント
+fn solve2() {
+    // BFS で部分木の頂点数をカウント（なんかやたら遅い）
     input! {
         n: usize,
         uv: [(Usize1, Usize1); n-1],
