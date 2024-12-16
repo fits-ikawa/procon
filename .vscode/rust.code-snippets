@@ -36,7 +36,7 @@
             "    input! {",
             "        n: usize, m: usize,",
             "        a: [usize; n],",
-            "        ab: [[usize; m]; n],",
+            "        a: [[usize; m]; n],",
             "        ab: [(usize, usize); n],",
             "    }",
             "",

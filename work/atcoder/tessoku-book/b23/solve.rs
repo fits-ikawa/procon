@@ -1,3 +1,60 @@
+#![allow(unused_imports)]
+use core::f64;
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[allow(clippy::needless_range_loop)]
+#[fastout]
+fn main() {
+    input! {
+        n: usize,
+        xy: [(usize, usize); n],
+    }
+
+    use mylib::OptionExt;
+
+    // dp[s][i]
+    // 集合 s の街を一度ずつ巡って町 i にいるときの最小移動距離
+    let mut dp = vec![vec![None; n]; 1 << n];
+    dp[0][0] = Some(0.0); // スタート地点に戻ってくるので、町 0 にいるが町 0 は s に含まない
+
+    for s in 0..1 << n {
+        for i in 0..n {
+            if dp[s][i].is_none() {
+                continue;
+            }
+
+            for j in 0..n {
+                let next = 1 << j;
+                if i != j && s & next == 0 {
+                    dp[s | next][j] =
+                        dp[s | next][j].min_or(dp[s][i].map(|x| x + dist(xy[i], xy[j])));
+                }
+            }
+        }
+    }
+
+    println!("{}", dp[(1 << n) - 1][0].unwrap());
+}
+
+fn dist(a: (usize, usize), b: (usize, usize)) -> f64 {
+    ((a.0.abs_diff(b.0).pow(2) + a.1.abs_diff(b.1).pow(2)) as f64).sqrt()
+}
+
 pub mod mylib {
     use std::cmp::Ord;
 
