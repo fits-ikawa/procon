@@ -1,3 +1,78 @@
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[allow(clippy::needless_range_loop)]
+#[fastout]
+fn main() {
+    input! {
+        n: usize, m: usize,
+    }
+
+    let mut k = vec![];
+    let mut a = vec![];
+
+    let mut b2t = vec![vec![]; n];
+
+    for i in 0..m {
+        input! {
+            ki: usize,
+            ai: [Usize1; ki],
+        }
+
+        for &aij in &ai {
+            b2t[aij].push(i);
+        }
+
+        k.push(ki);
+        a.push(ai.into_iter().rev().collect_vec());
+    }
+
+    use mylib::MultiBTreeSet;
+
+    let mut top = MultiBTreeSet::new();
+
+    for i in 0..m {
+        top.insert(a[i].pop().unwrap());
+    }
+
+    let mut pair = vec![];
+
+    for (&k, &v) in top.iter_unique() {
+        if v == 2 {
+            pair.push(k);
+        }
+    }
+
+    while let Some(p) = pair.pop() {
+        top.remove_n(&p, 2);
+
+        for &t in &b2t[p] {
+            if let Some(q) = a[t].pop() {
+                if top.insert(q) == 2 {
+                    pair.push(q);
+                }
+            }
+        }
+    }
+
+    println!("{}", if top.is_empty() { "Yes" } else { "No" });
+}
+
 pub mod mylib {
     use std::collections::{btree_map, BTreeMap};
     use std::iter::{FlatMap, Repeat, Take};
