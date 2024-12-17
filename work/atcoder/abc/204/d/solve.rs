@@ -25,6 +25,9 @@ fn main() {
     }
 
     let m = t.iter().sum::<usize>();
+
+    // dp[i][j]
+    // i 品目までの料理から選んで作ってオーブンの使用時間を j にできるかどうか
     let mut dp = vec![vec![false; m + 1]; n + 1];
     dp[0][0] = true;
 
