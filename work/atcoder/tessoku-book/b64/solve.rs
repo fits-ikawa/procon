@@ -31,6 +31,7 @@ fn main() {
         adj[b].push((a, c));
     }
 
+    // ダイクストラ法
     let mut todo = BinaryHeap::new();
     let mut cost = vec![usize::MAX; n];
     let mut prev = vec![0; n]; // prev[0] は不定
