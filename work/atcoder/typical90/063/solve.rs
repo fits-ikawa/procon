@@ -1,3 +1,54 @@
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[allow(clippy::needless_range_loop)]
+#[fastout]
+fn main() {
+    input! {
+        h: usize, w: usize,
+        p: [[usize; w]; h],
+    }
+
+    use mylib::MultiBTreeSet;
+
+    let mut ans = 0;
+
+    for c in (0..h).powerset() {
+        if c.is_empty() {
+            continue;
+        }
+
+        let mut set = MultiBTreeSet::new();
+
+        for j in 0..w {
+            if (0..c.len()).map(|i| p[c[i]][j]).all_equal() {
+                set.insert(p[c[0]][j]);
+            }
+        }
+
+        if !set.is_empty() {
+            ans = ans.max(c.len() * set.as_btree_map().values().max().unwrap());
+        }
+    }
+
+    println!("{}", ans);
+}
+
 pub mod mylib {
     use std::collections::{btree_map, BTreeMap};
     use std::iter::{FlatMap, Repeat, Take};
@@ -199,7 +250,7 @@ pub mod mylib {
         }
 
         /// Returns an iterator over unique elements in the specified range.
-        pub fn range_unique<R>(&self, range: R) -> impl DoubleEndedIterator<Item = (&T, &usize)>
+        pub fn range_unique<R>(&self, range: R) -> impl Iterator<Item = (&T, &usize)>
         where
             R: core::ops::RangeBounds<T>,
         {
@@ -216,24 +267,13 @@ pub mod mylib {
                 .flat_map(|(item, &count)| std::iter::repeat(item).take(count))
         }
 
-        /// Returns an iterator over all elements in the specified range in reverse order, including duplicates.
-        pub fn range_rev<R>(&self, range: R) -> impl Iterator<Item = &T>
-        where
-            R: core::ops::RangeBounds<T>,
-        {
-            self.map
-                .range(range)
-                .rev()
-                .flat_map(|(item, &count)| std::iter::repeat(item).take(count))
-        }
-
         /// Returns an iterator over unique elements in the set.
-        pub fn iter_unique(&self) -> impl DoubleEndedIterator<Item = (&T, &usize)> {
+        pub fn iter_unique(&self) -> impl Iterator<Item = (&T, &usize)> {
             self.map.iter()
         }
 
         /// Consumes the set and returns an iterator over unique elements.
-        pub fn into_iter_unique(self) -> impl DoubleEndedIterator<Item = (T, usize)> {
+        pub fn into_iter_unique(self) -> impl Iterator<Item = (T, usize)> {
             self.map.into_iter()
         }
 
@@ -241,14 +281,6 @@ pub mod mylib {
         pub fn iter(&self) -> impl Iterator<Item = &T> {
             self.map
                 .iter()
-                .flat_map(|(item, &count)| std::iter::repeat(item).take(count))
-        }
-
-        /// Returns an iterator over all elements in the set in reverse order, including duplicates.
-        pub fn iter_rev(&self) -> impl Iterator<Item = &T> {
-            self.map
-                .iter()
-                .rev()
                 .flat_map(|(item, &count)| std::iter::repeat(item).take(count))
         }
     }

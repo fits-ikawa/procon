@@ -146,3 +146,20 @@ fn count_prime_factors(n: u64) -> Vec<(u64, usize)> {
         .sorted()
         .collect::<Vec<_>>()
 }
+
+fn divisors(n: u64) -> Vec<u64> {
+    let mut asc = vec![];
+    let mut desc = vec![];
+
+    for i in 1..=(n as f64).sqrt().floor() as u64 {
+        if n % i == 0 {
+            asc.push(i);
+            if i != n / i {
+                desc.push(n / i);
+            }
+        }
+    }
+
+    asc.extend(desc.into_iter().rev());
+    asc
+}

@@ -1,3 +1,72 @@
+#![allow(clippy::map_entry)]
+#![allow(clippy::needless_range_loop)]
+#![allow(clippy::too_many_arguments)]
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[fastout]
+fn main() {
+    input! {
+        q: usize,
+    }
+
+    let mut set = mylib::MultiBTreeSet::new();
+
+    for _ in 0..q {
+        input! {
+            t: usize,
+        }
+
+        match t {
+            1 => {
+                input! {
+                    x: usize,
+                }
+
+                set.insert(x);
+            }
+            2 => {
+                input! {
+                    x: usize, k: usize,
+                }
+
+                if let Some(y) = set.range_rev(..=x).nth(k - 1) {
+                    println!("{}", y);
+                } else {
+                    println!("-1");
+                }
+            }
+            3 => {
+                input! {
+                    x: usize, k: usize,
+                }
+
+                if let Some(y) = set.range(x..).nth(k - 1) {
+                    println!("{}", y);
+                } else {
+                    println!("-1");
+                }
+            }
+            _ => (),
+        }
+    }
+}
+
 pub mod mylib {
     use std::collections::{btree_map, BTreeMap};
     use std::iter::{FlatMap, Repeat, Take};

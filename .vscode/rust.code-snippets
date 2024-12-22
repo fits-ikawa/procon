@@ -12,6 +12,9 @@
         "scope": "rust",
         "prefix": "atcoder",
         "body": [
+            "#![allow(clippy::map_entry)]"
+            "#![allow(clippy::needless_range_loop)]"
+            "#![allow(clippy::too_many_arguments)]"
             "#![allow(unused_imports)]",
             "use itertools::*;",
             "use itertools_num::*;",
@@ -30,7 +33,6 @@
             "    };",
             "}",
             "",
-            "#[allow(clippy::needless_range_loop)]",
             "#[fastout]",
             "fn main() {",
             "    input! {",
