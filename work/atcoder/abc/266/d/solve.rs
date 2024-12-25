@@ -1,3 +1,62 @@
+#![allow(clippy::map_entry)]
+#![allow(clippy::needless_range_loop)]
+#![allow(clippy::too_many_arguments)]
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[fastout]
+fn main() {
+    input! {
+        n: usize,
+        txa: [(usize, usize, usize); n],
+    }
+
+    let tmax = txa.iter().map(|(t, _, _)| t).max().copied().unwrap();
+
+    let txa = txa
+        .into_iter()
+        .map(|(t, x, a)| (t, (x, a)))
+        .collect::<BTreeMap<_, _>>();
+
+    let mut dp = vec![vec![None; 5]; tmax + 1];
+    dp[0][0] = Some(0);
+
+    for i in 1..=tmax {
+        if let Some(&(x, a)) = txa.get(&i) {
+            // すぬけ君が現れるので叩けるなら叩く
+            for j in 0..=4_usize {
+                for k in j.saturating_sub(1)..=(j + 1).min(4) {
+                    dp[i][j] = dp[i][j].max(dp[i - 1][k].map(|e| e + if j == x { a } else { 0 }));
+                }
+            }
+        } else {
+            // 移動のみ
+            for j in 0..=4_usize {
+                for k in j.saturating_sub(1)..=(j + 1).min(4) {
+                    dp[i][j] = dp[i][j].max(dp[i - 1][k]);
+                }
+            }
+        }
+    }
+
+    println!("{}", dp[tmax].iter().flatten().max().unwrap());
+}
+
 pub mod mylib {
     use std::cmp::Ord;
 
