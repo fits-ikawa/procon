@@ -143,7 +143,7 @@ def do_test(
 
 class AutoTestHandler(PatternMatchingEventHandler):
     def __init__(self, basedir, tmpdir, language_config, targets):
-        super().__init__(targets)
+        super().__init__(patterns=targets)
         self.basedir = basedir
         self.tmpdir = tmpdir
         self.filehash = {}
