@@ -1,0 +1,26 @@
+abcde
+3
+3 ab abc abcd
+4 f c cd bcde
+2 e de
+
+2
+
+abcde
+3
+2 ab abc
+3 f c bcde
+1 e
+
+-1
+
+aaabbbbcccc
+6
+2 aa aaa
+2 dd ddd
+2 ab aabb
+4 bbaa bbbc bbb bbcc
+2 cc bcc
+3 ccc cccc ccccc
+
+4
