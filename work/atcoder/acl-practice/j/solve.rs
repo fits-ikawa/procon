@@ -50,7 +50,7 @@ fn main() {
                     x: Usize1, v: isize,
                 }
 
-                let ans = seg_a.max_right(x, |&ai| ai < v) + 1;
+                let ans = seg_a.max_right(x, |&sm| sm < v) + 1;
 
                 println!("{}", ans);
             }

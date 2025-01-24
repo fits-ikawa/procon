@@ -38,7 +38,7 @@ class FenwickTree:
             p += p & -p
 
     def _sum(self, r):
-        # 右半開区間で考えるので r はそのまま 1-indexed での r になる。
+        # 右半開区間で考えるので r はそのまま 1-indexed 閉区間での r になる。
         # よって r += 1 しない
         s = 0
         while r > 0:
