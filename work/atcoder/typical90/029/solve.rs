@@ -19,8 +19,53 @@ macro_rules! debug {
     };
 }
 
+use ac_library::{LazySegtree, MapMonoid, Max};
+
+struct MaxUpdate;
+
+impl MapMonoid for MaxUpdate {
+    type M = Max<usize>;
+    type F = usize;
+
+    fn identity_map() -> Self::F {
+        usize::MAX
+    }
+
+    fn mapping(&f: &usize, &x: &usize) -> usize {
+        if f == Self::identity_map() {
+            x
+        } else {
+            f
+        }
+    }
+
+    fn composition(&f: &usize, &g: &usize) -> usize {
+        if f == Self::identity_map() {
+            g
+        } else {
+            f
+        }
+    }
+}
+
 #[fastout]
 fn main() {
+    input! {
+        w: usize, n: usize,
+        lr: [(Usize1, Usize1); n],
+    }
+
+    let mut seg = LazySegtree::<MaxUpdate>::new(w);
+
+    for (l, r) in lr {
+        let h = seg.prod(l..r + 1);
+        seg.apply_range(l..r + 1, h + 1);
+        println!("{}", h + 1);
+    }
+}
+
+#[allow(dead_code)]
+fn solve() {
     input! {
         _w: usize, n: usize,
         lr: [(usize, usize); n],

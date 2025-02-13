@@ -17,8 +17,38 @@ macro_rules! debug {
 }
 
 #[allow(clippy::needless_range_loop)]
-// #[fastout]
+#[fastout]
 fn main() {
+    // セグ木（累積 min）で解く
+    input! {
+        n: usize, m: usize,
+        a: [usize; n],
+        b: [usize; m],
+    }
+
+    use ac_library::{Min, Segtree};
+
+    let mut seg = Segtree::<Min<usize>>::new(n);
+
+    for i in 0..n {
+        seg.set(i, a[i]);
+    }
+
+    for bi in b {
+        let pos = seg.max_right(0, |&x| bi < x);
+
+        if pos == n {
+            println!("-1");
+        } else {
+            println!("{}", pos + 1);
+        }
+    }
+}
+
+#[allow(clippy::needless_range_loop)]
+#[allow(dead_code)]
+fn solve() {
+    // コンテスト中 AC
     input! {
         n: usize, m: usize,
         a: [usize; n],
