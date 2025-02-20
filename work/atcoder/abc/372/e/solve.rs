@@ -27,10 +27,10 @@ fn main() {
     }
 
     let mut uf = ac_library::Dsu::new(n);
-    let conn = vec![RefCell::new(btreeset! {}); n];
+    let mut conn = vec![btreeset! {}; n];
 
     for i in 0..n {
-        conn[i].borrow_mut().insert(i);
+        conn[i].insert(i);
     }
 
     for _ in 0..q {
@@ -45,17 +45,17 @@ fn main() {
                 }
 
                 if !uf.same(u, v) {
-                    let mut a = conn[uf.leader(u)].take();
-                    let mut b = conn[uf.leader(v)].take();
+                    let mut a = std::mem::take(&mut conn[uf.leader(u)]);
+                    let mut b = std::mem::take(&mut conn[uf.leader(v)]);
 
                     let lnew = uf.merge(u, v);
 
                     if a.len() >= b.len() {
                         a.extend(b);
-                        conn[lnew].replace(a);
+                        conn[lnew] = a;
                     } else {
                         b.extend(a);
-                        conn[lnew].replace(b);
+                        conn[lnew] = b;
                     };
                 }
             }
@@ -64,7 +64,7 @@ fn main() {
                     v: Usize1, k: Usize1,
                 }
 
-                if let Some(w) = conn[uf.leader(v)].borrow().iter().rev().nth(k) {
+                if let Some(w) = conn[uf.leader(v)].iter().rev().nth(k) {
                     println!("{}", w + 1);
                 } else {
                     println!("-1");
