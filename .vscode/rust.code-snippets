@@ -12,6 +12,7 @@
         "scope": "rust",
         "prefix": "atcoder",
         "body": [
+            "#![allow(clippy::comparison_chain)]"
             "#![allow(clippy::map_entry)]"
             "#![allow(clippy::needless_range_loop)]"
             "#![allow(clippy::too_many_arguments)]"

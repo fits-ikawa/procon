@@ -1,0 +1,11 @@
+AABCC
+
+2
+
+ARC
+
+0
+
+AABAAABBAEDCCCD
+
+4
