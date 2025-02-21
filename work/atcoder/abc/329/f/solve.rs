@@ -28,24 +28,24 @@ fn main() {
         ab: [(Usize1, Usize1); q],
     }
 
-    let boxes = vec![RefCell::new(hashset! {}); n];
+    let mut boxes = vec![hashset! {}; n];
 
     for i in 0..n {
-        boxes[i].borrow_mut().insert(c[i]);
+        boxes[i].insert(c[i]);
     }
 
     for (a, b) in ab {
-        let mut ba = boxes[a].take();
-        let mut bb = boxes[b].take();
+        let mut ba = std::mem::take(&mut boxes[a]);
+        let mut bb = std::mem::take(&mut boxes[b]);
 
         if ba.len() >= bb.len() {
             ba.extend(bb);
-            boxes[b].replace(ba);
+            boxes[b] = ba;
         } else {
             bb.extend(ba);
-            boxes[b].replace(bb);
+            boxes[b] = bb;
         }
 
-        println!("{}", boxes[b].borrow().len());
+        println!("{}", boxes[b].len());
     }
 }
