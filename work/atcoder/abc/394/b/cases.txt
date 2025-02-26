@@ -1,0 +1,14 @@
+3
+tc
+oder
+a
+
+atcoder
+
+4
+cat
+enate
+on
+c
+
+concatenate
