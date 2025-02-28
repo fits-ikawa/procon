@@ -23,6 +23,40 @@ fn main() {
         n: usize, k: usize,
     }
 
+    const N: usize = 100000;
+    let logk = k.next_power_of_two().ilog2() as usize;
+
+    // ダブリング
+    let mut dp = vec![vec![0; N]; logk + 1];
+
+    for j in 0..N {
+        dp[0][j] = f(j);
+    }
+
+    for i in 1..=logk {
+        for j in 0..N {
+            dp[i][j] = dp[i - 1][dp[i - 1][j]];
+        }
+    }
+
+    let mut cur = n;
+
+    for i in 0..=logk {
+        if k >> i & 1 > 0 {
+            cur = dp[i][cur];
+        }
+    }
+
+    println!("{}", cur);
+}
+
+#[allow(clippy::needless_range_loop)]
+#[allow(dead_code)]
+fn solve() {
+    input! {
+        n: usize, k: usize,
+    }
+
     let mut set = btreeset! {};
     let mut adj = vec![None; 100000];
     let mut x = n;
