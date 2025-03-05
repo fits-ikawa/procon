@@ -23,6 +23,25 @@ fn main() {
         sab: char, sac: char, sbc: char,
     }
 
+    if (sab == '>' && sac == '<') || (sab == '<' && sac == '>') {
+        // B < A < C or C < A < B
+        println!("A");
+    } else if (sab == '<' && sbc == '<') || (sab == '>' && sbc == '>') {
+        // A < B < C or C < B < A
+        println!("B");
+    } else {
+        // 矛盾する入力はないので
+        // A < C < B or B < C < A
+        println!("C");
+    }
+}
+
+#[allow(dead_code)]
+fn solve() {
+    input! {
+        sab: char, sac: char, sbc: char,
+    }
+
     let flip = hashmap! {
         '<' => '>',
         '>' => '<'
