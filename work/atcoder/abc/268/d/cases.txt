@@ -1,0 +1,33 @@
+1 1
+chokudai
+chokudai
+
+-1
+
+2 2
+choku
+dai
+chokudai
+choku_dai
+
+dai_choku
+
+2 2
+chokudai
+atcoder
+chokudai_atcoder
+atcoder_chokudai
+
+-1
+
+4 4
+ab
+cd
+ef
+gh
+hoge
+fuga
+____
+_ab_cd_ef_gh_
+
+ab__ef___cd_gh
