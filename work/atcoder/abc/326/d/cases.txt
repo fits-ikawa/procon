@@ -1,0 +1,16 @@
+5
+ABCBC
+ACAAB
+
+Yes
+AC..B
+.BA.C
+C.BA.
+BA.C.
+..CBA
+
+3
+AAA
+BBB
+
+No
