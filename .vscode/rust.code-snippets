@@ -12,10 +12,11 @@
         "scope": "rust",
         "prefix": "atcoder",
         "body": [
-            "#![allow(clippy::comparison_chain)]"
-            "#![allow(clippy::map_entry)]"
-            "#![allow(clippy::needless_range_loop)]"
-            "#![allow(clippy::too_many_arguments)]"
+            "#![allow(clippy::comparison_chain)]",
+            "#![allow(clippy::collapsible_else_if)]",
+            "#![allow(clippy::map_entry)]",
+            "#![allow(clippy::needless_range_loop)]",
+            "#![allow(clippy::too_many_arguments)]",
             "#![allow(unused_imports)]",
             "use itertools::*;",
             "use itertools_num::*;",
