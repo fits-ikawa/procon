@@ -16,13 +16,49 @@ macro_rules! debug {
     };
 }
 
-#[allow(clippy::needless_range_loop)]
 #[fastout]
 fn main() {
     input! {
         n: usize, k: usize,
         a: [usize; n],
     }
+
+    // グラフ問題として解く
+
+    let mut todo = BinaryHeap::new();
+    let mut seen = HashSet::new();
+
+    todo.push(Reverse(0));
+    seen.insert(0);
+
+    let mut cnt = 0;
+
+    while let Some(Reverse(cost)) = todo.pop() {
+        cnt += 1;
+
+        if cnt == k + 1 {
+            println!("{}", cost);
+            return;
+        }
+
+        for &ai in &a {
+            if !seen.contains(&(cost + ai)) {
+                seen.insert(cost + ai);
+                todo.push(Reverse(cost + ai));
+            }
+        }
+    }
+}
+
+#[allow(clippy::needless_range_loop)]
+#[allow(dead_code)]
+fn solve() {
+    input! {
+        n: usize, k: usize,
+        a: [usize; n],
+    }
+
+    // DP? で解く
 
     // dp[i][j]
     // i 番目までのたこ焼きを自由に買ったときの j 番目に安い支払い金額
