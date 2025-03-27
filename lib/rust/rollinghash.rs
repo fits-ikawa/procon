@@ -1,7 +1,8 @@
 pub mod mylib {
-    /// A rolling hash implementation for ASCII strings.
+    /// A rolling hash implementation for sequences of numbers.
     ///
     /// This implementation uses a modulo of 2^61 - 1 to reduce hash collisions.
+    /// For strings, use the `from_chars` constructor, which converts ASCII characters to u64.
     pub struct RollingHash {
         hash: Vec<u64>,
         power: Vec<u64>,
@@ -16,9 +17,6 @@ pub mod mylib {
         const POSITIVISER: u64 = Self::MOD * 4;
 
         /// Multiplies two numbers in a way that avoids overflow under modulo 2^61 - 1 arithmetic.
-        ///
-        /// This function splits the input values into high and low parts,
-        /// multiplies the parts separately, and then recombines them.
         ///
         /// **Note:** The result is not reduced modulo 2^61 - 1. To obtain the final value
         /// within the correct range, apply `calc_mod` on the result.
@@ -35,9 +33,6 @@ pub mod mylib {
         }
 
         /// Reduces the given value modulo 2^61 - 1.
-        ///
-        /// It splits the value into its upper and lower parts relative to 2^61 and
-        /// then combines them to ensure the result is within the modulo.
         fn calc_mod(x: u64) -> u64 {
             let xu = x >> 61;
             let xd = x & Self::MASK61;
@@ -50,15 +45,36 @@ pub mod mylib {
             }
         }
 
-        /// Creates a new `RollingHash` for the given ASCII string.
+        /// Creates a new `RollingHash` for a sequence of numbers.
         ///
-        /// The hash and power values for each prefix of the input are precomputed.
+        /// # Arguments
+        ///
+        /// * `seq` - A slice of `u64` representing the sequence.
+        /// * `base` - The base used for the polynomial rolling hash.
+        pub fn new(seq: &[u64], base: u64) -> Self {
+            let length = seq.len();
+            let mut hash = vec![0; length + 1];
+            let mut power = vec![1; length + 1];
+
+            for (i, &val) in seq.iter().enumerate() {
+                hash[i + 1] = Self::calc_mod(Self::mul(hash[i], base) + val);
+                power[i + 1] = Self::calc_mod(Self::mul(power[i], base));
+            }
+
+            Self {
+                hash,
+                power,
+                length,
+            }
+        }
+
+        /// Creates a new `RollingHash` for an ASCII string provided as a slice of `char`.
         ///
         /// # Arguments
         ///
         /// * `s` - A slice of `char` representing an ASCII string.
         /// * `base` - The base used for the polynomial rolling hash.
-        pub fn new(s: &[char], base: u64) -> Self {
+        pub fn from_chars(s: &[char], base: u64) -> Self {
             let length = s.len();
             let mut hash = vec![0; length + 1];
             let mut power = vec![1; length + 1];
