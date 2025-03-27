@@ -1,3 +1,8 @@
+#![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
+#![allow(clippy::map_entry)]
+#![allow(clippy::needless_range_loop)]
+#![allow(clippy::too_many_arguments)]
 #![allow(unused_imports)]
 use itertools::*;
 use itertools_num::*;
@@ -16,7 +21,6 @@ macro_rules! debug {
     };
 }
 
-#[allow(clippy::needless_range_loop)]
 #[fastout]
 fn main() {
     input! {
@@ -25,20 +29,25 @@ fn main() {
     }
 
     let mut adj = vec![vec![]; n];
+    let mut r2i = hashmap! {};
 
-    for (a, b, c) in abc {
+    for (i, (a, b, c)) in abc.into_iter().enumerate() {
         adj[a].push((b, c));
         adj[b].push((a, c));
+
+        r2i.insert((a, b), i);
+        r2i.insert((b, a), i);
     }
 
-    // ダイクストラ法（基本形）
     let mut todo = BinaryHeap::new();
     let mut cost = vec![usize::MAX; n];
+    let mut prev = vec![0; n];
+
     todo.push((Reverse(0), 0));
     cost[0] = 0;
 
     while let Some((Reverse(c), from)) = todo.pop() {
-        if c > cost[from] {
+        if cost[from] < c {
             continue;
         }
 
@@ -46,15 +55,12 @@ fn main() {
             if cost[to] > c + d {
                 cost[to] = c + d;
                 todo.push((Reverse(c + d), to));
+                prev[to] = from;
             }
         }
     }
 
-    for i in 0..n {
-        if cost[i] == usize::MAX {
-            println!("-1");
-        } else {
-            println!("{}", cost[i]);
-        }
-    }
+    let ans = (1..n).map(|i| r2i[&(prev[i], i)] + 1).collect_vec();
+
+    println!("{}", ans.iter().join(" "));
 }
