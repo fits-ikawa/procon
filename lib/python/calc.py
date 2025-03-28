@@ -1,4 +1,4 @@
-from math import *
+from math import log10, log2, factorial, comb, perm, gcd, lcm
 
 
 def fact(n: int) -> int:
