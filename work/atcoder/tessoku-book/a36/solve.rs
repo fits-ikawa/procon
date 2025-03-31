@@ -1,4 +1,5 @@
 #![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
 #![allow(clippy::map_entry)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::too_many_arguments)]
@@ -24,26 +25,14 @@ macro_rules! debug {
 fn main() {
     input! {
         n: usize, k: usize,
-        a: [Usize1; n],
     }
 
-    // ダブリング（基本形）
-    let mut dp = vec![vec![0; n]; 61];
-    dp[0] = a;
-
-    for i in 1..=60 {
-        for j in 0..n {
-            dp[i][j] = dp[i - 1][dp[i - 1][j]];
+    println!(
+        "{}",
+        if (n * 2 - 2) <= k && k % 2 == 0 {
+            "Yes"
+        } else {
+            "No"
         }
-    }
-
-    let mut cur = 0;
-
-    for i in 0..=60 {
-        if k >> i & 1 > 0 {
-            cur = dp[i][cur];
-        }
-    }
-
-    println!("{}", cur + 1);
+    );
 }

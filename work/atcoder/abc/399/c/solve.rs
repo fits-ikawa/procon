@@ -1,4 +1,5 @@
 #![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
 #![allow(clippy::map_entry)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::too_many_arguments)]
@@ -23,27 +24,30 @@ macro_rules! debug {
 #[fastout]
 fn main() {
     input! {
-        n: usize, k: usize,
-        a: [Usize1; n],
+        n: usize, m: usize,
+        uv: [(Usize1, Usize1); m],
     }
 
-    // ダブリング（基本形）
-    let mut dp = vec![vec![0; n]; 61];
-    dp[0] = a;
+    let mut uf = ac_library::Dsu::new(n);
+    let mut cnt = vec![0; n];
 
-    for i in 1..=60 {
-        for j in 0..n {
-            dp[i][j] = dp[i - 1][dp[i - 1][j]];
+    for (u, v) in uv {
+        if uf.same(u, v) {
+            cnt[uf.leader(u)] += 1;
+        } else {
+            let cu = cnt[uf.leader(u)];
+            let cv = cnt[uf.leader(v)];
+
+            let newl = uf.merge(u, v);
+            cnt[newl] = cu + cv + 1;
         }
     }
 
-    let mut cur = 0;
+    let mut ans = 0;
 
-    for i in 0..=60 {
-        if k >> i & 1 > 0 {
-            cur = dp[i][cur];
-        }
+    for g in uf.groups() {
+        ans += cnt[uf.leader(g[0])] - (g.len() - 1);
     }
 
-    println!("{}", cur + 1);
+    println!("{}", ans);
 }

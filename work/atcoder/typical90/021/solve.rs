@@ -26,6 +26,29 @@ fn main() {
         ab: [(Usize1, Usize1); m],
     }
 
+    let mut graph = ac_library::SccGraph::new(n);
+
+    for (a, b) in ab {
+        graph.add_edge(a, b);
+    }
+
+    let scc = graph.scc();
+
+    let ans = scc
+        .iter()
+        .map(|g| g.len() * (g.len() - 1) / 2)
+        .sum::<usize>();
+
+    println!("{}", ans);
+}
+
+#[allow(dead_code)]
+fn solve() {
+    input! {
+        n: usize, m: usize,
+        ab: [(Usize1, Usize1); m],
+    }
+
     let mut adj = vec![vec![]; n];
     let mut adj_rev = vec![vec![]; n];
 

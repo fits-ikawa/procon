@@ -1,3 +1,57 @@
+#![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
+#![allow(clippy::map_entry)]
+#![allow(clippy::needless_range_loop)]
+#![allow(clippy::too_many_arguments)]
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[fastout]
+fn main() {
+    input! {
+        n: usize,
+        abcd: [(usize, usize, usize, usize); n],
+    }
+
+    let mut acc = mylib::Cumsum2D::new(1501, 1501);
+
+    for (a, b, c, d) in abcd {
+        acc.add(a, b, 1);
+        acc.add(c, b, -1);
+        acc.add(a, d, -1);
+        acc.add(c, d, 1);
+    }
+
+    acc.build();
+
+    let mut ans = 0;
+
+    for i in 0..=1500 {
+        for j in 0..=1500 {
+            if acc.get_cumulative(i + 1, j + 1) > 0 {
+                ans += 1;
+            }
+        }
+    }
+
+    println!("{}", ans);
+}
+
 pub mod mylib {
     /// A 2D cumulative sum structure for efficient range sum queries.
     #[derive(Debug, Clone)]

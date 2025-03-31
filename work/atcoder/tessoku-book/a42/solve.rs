@@ -1,9 +1,56 @@
+#![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
+#![allow(clippy::map_entry)]
+#![allow(clippy::needless_range_loop)]
+#![allow(clippy::too_many_arguments)]
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[fastout]
+fn main() {
+    input! {
+        n: usize, k: usize,
+        ab: [(usize, usize); n],
+    }
+
+    let mut acc = mylib::Cumsum2D::new(101, 101);
+    for (a, b) in ab {
+        acc.add(a, b, 1);
+    }
+    acc.build();
+
+    let mut ans = 0;
+
+    for i in 1..=(100 - k) {
+        for j in 1..=(100 - k) {
+            ans = ans.max(acc.sum(i, j, i + k + 1, j + k + 1));
+        }
+    }
+
+    println!("{}", ans);
+}
+
 pub mod mylib {
     /// A 2D cumulative sum structure for efficient range sum queries.
     #[derive(Debug, Clone)]
     pub struct Cumsum2D<T> {
         data: Vec<Vec<T>>,
-        pub cum: Vec<Vec<T>>,
+        cum: Vec<Vec<T>>,
         h: usize,
         w: usize,
     }
@@ -81,10 +128,29 @@ pub mod mylib {
         pub fn sum(&self, x1: usize, y1: usize, x2: usize, y2: usize) -> T {
             self.cum[x1][y1] + self.cum[x2][y2] - self.cum[x1][y2] - self.cum[x2][y1]
         }
+    }
+}
 
-        /// Returns the cumulative sum table value at the specified position `(x, y)`.
-        pub fn get_cumulative(&self, x: usize, y: usize) -> T {
-            self.cum[x][y]
+#[allow(dead_code)]
+fn solve() {
+    input! {
+        n: usize, k: usize,
+        ab: [(usize, usize); n],
+    }
+
+    let mut ans = 0;
+
+    for a in 1..100 {
+        for b in 1..100 {
+            ans = ans.max(
+                (0..n)
+                    .filter(|&i| {
+                        a <= ab[i].0 && ab[i].0 <= a + k && b <= ab[i].1 && ab[i].1 <= b + k
+                    })
+                    .count(),
+            );
         }
     }
+
+    println!("{}", ans);
 }

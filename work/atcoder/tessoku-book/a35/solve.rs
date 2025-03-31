@@ -1,4 +1,5 @@
 #![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
 #![allow(clippy::map_entry)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::too_many_arguments)]
@@ -23,27 +24,25 @@ macro_rules! debug {
 #[fastout]
 fn main() {
     input! {
-        n: usize, k: usize,
-        a: [Usize1; n],
+        n: usize,
+        a: [usize; n],
     }
 
-    // ダブリング（基本形）
-    let mut dp = vec![vec![0; n]; 61];
-    dp[0] = a;
+    println!("{}", game(1, 1, n, &a));
+}
 
-    for i in 1..=60 {
-        for j in 0..n {
-            dp[i][j] = dp[i - 1][dp[i - 1][j]];
-        }
+#[memoise::memoise(x <= 2000, y <= 2000)]
+fn game(x: usize, y: usize, n: usize, a: &[usize]) -> usize {
+    if x == n {
+        return a[y - 1];
     }
 
-    let mut cur = 0;
+    let l = game(x + 1, y, n, a);
+    let r = game(x + 1, y + 1, n, a);
 
-    for i in 0..=60 {
-        if k >> i & 1 > 0 {
-            cur = dp[i][cur];
-        }
+    if x % 2 == 1 {
+        l.max(r)
+    } else {
+        l.min(r)
     }
-
-    println!("{}", cur + 1);
 }

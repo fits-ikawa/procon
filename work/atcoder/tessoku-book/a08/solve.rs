@@ -1,9 +1,49 @@
+#![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
+#![allow(clippy::map_entry)]
+#![allow(clippy::needless_range_loop)]
+#![allow(clippy::too_many_arguments)]
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[fastout]
+fn main() {
+    input! {
+        h: usize, w: usize,
+        x: [[usize; w]; h],
+        q: usize,
+        abcd: [(Usize1, Usize1, Usize1, Usize1); q],
+    }
+
+    let mut acc = mylib::Cumsum2D::from_vec(x);
+    acc.build();
+
+    for (a, b, c, d) in abcd {
+        println!("{}", acc.sum(a, b, c + 1, d + 1));
+    }
+}
+
 pub mod mylib {
     /// A 2D cumulative sum structure for efficient range sum queries.
     #[derive(Debug, Clone)]
     pub struct Cumsum2D<T> {
         data: Vec<Vec<T>>,
-        pub cum: Vec<Vec<T>>,
+        cum: Vec<Vec<T>>,
         h: usize,
         w: usize,
     }
@@ -80,11 +120,6 @@ pub mod mylib {
         /// - `O(1)`
         pub fn sum(&self, x1: usize, y1: usize, x2: usize, y2: usize) -> T {
             self.cum[x1][y1] + self.cum[x2][y2] - self.cum[x1][y2] - self.cum[x2][y1]
-        }
-
-        /// Returns the cumulative sum table value at the specified position `(x, y)`.
-        pub fn get_cumulative(&self, x: usize, y: usize) -> T {
-            self.cum[x][y]
         }
     }
 }

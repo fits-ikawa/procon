@@ -1,4 +1,5 @@
 #![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
 #![allow(clippy::map_entry)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::too_many_arguments)]
@@ -23,27 +24,17 @@ macro_rules! debug {
 #[fastout]
 fn main() {
     input! {
-        n: usize, k: usize,
-        a: [Usize1; n],
+        _n: usize, c: char,
+        a: Chars,
     }
 
-    // ダブリング（基本形）
-    let mut dp = vec![vec![0; n]; 61];
-    dp[0] = a;
+    let map = hashmap! {
+        'W' => 0,
+        'B' => 1,
+        'R' => 2,
+    };
 
-    for i in 1..=60 {
-        for j in 0..n {
-            dp[i][j] = dp[i - 1][dp[i - 1][j]];
-        }
-    }
+    let result = a.iter().map(|ai| map[ai]).sum::<usize>() % 3;
 
-    let mut cur = 0;
-
-    for i in 0..=60 {
-        if k >> i & 1 > 0 {
-            cur = dp[i][cur];
-        }
-    }
-
-    println!("{}", cur + 1);
+    println!("{}", if result == map[&c] { "Yes" } else { "No" });
 }

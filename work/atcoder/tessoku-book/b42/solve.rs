@@ -1,4 +1,5 @@
 #![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
 #![allow(clippy::map_entry)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::too_many_arguments)]
@@ -23,27 +24,28 @@ macro_rules! debug {
 #[fastout]
 fn main() {
     input! {
-        n: usize, k: usize,
-        a: [Usize1; n],
+        n: usize,
+        ab: [(isize, isize); n],
     }
 
-    // ダブリング（基本形）
-    let mut dp = vec![vec![0; n]; 61];
-    dp[0] = a;
+    let mut ans = 0;
 
-    for i in 1..=60 {
-        for j in 0..n {
-            dp[i][j] = dp[i - 1][dp[i - 1][j]];
+    for front in [1, -1] {
+        for back in [1, -1] {
+            let mut sum_a = 0;
+            let mut sum_b = 0;
+
+            for i in 0..n {
+                let (a, b) = ab[i];
+
+                if a * front + b * back > 0 {
+                    sum_a += a;
+                    sum_b += b;
+                }
+            }
+            ans = ans.max(sum_a.abs() + sum_b.abs());
         }
     }
 
-    let mut cur = 0;
-
-    for i in 0..=60 {
-        if k >> i & 1 > 0 {
-            cur = dp[i][cur];
-        }
-    }
-
-    println!("{}", cur + 1);
+    println!("{}", ans);
 }

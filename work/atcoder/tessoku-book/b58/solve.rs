@@ -1,4 +1,5 @@
 #![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
 #![allow(clippy::map_entry)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::too_many_arguments)]
@@ -23,27 +24,30 @@ macro_rules! debug {
 #[fastout]
 fn main() {
     input! {
-        n: usize, k: usize,
-        a: [Usize1; n],
+        n: usize, l: usize, r: usize,
+        x: [usize; n],
     }
 
-    // ダブリング（基本形）
-    let mut dp = vec![vec![0; n]; 61];
-    dp[0] = a;
+    use ac_library::{Min, Segtree};
 
-    for i in 1..=60 {
-        for j in 0..n {
-            dp[i][j] = dp[i - 1][dp[i - 1][j]];
+    let mut seg = Segtree::<Min<usize>>::new(n);
+    seg.set(0, 0);
+
+    for i in 1..n {
+        let xi = x[i];
+
+        let left = xi.saturating_sub(r);
+        let right = xi.saturating_sub(l);
+
+        let pos_l = x.lower_bound(&left);
+        let pos_r = x.upper_bound(&right);
+
+        let c = seg.prod(pos_l..pos_r);
+
+        if c < usize::MAX {
+            seg.set(i, c + 1);
         }
     }
 
-    let mut cur = 0;
-
-    for i in 0..=60 {
-        if k >> i & 1 > 0 {
-            cur = dp[i][cur];
-        }
-    }
-
-    println!("{}", cur + 1);
+    println!("{}", seg.get(n - 1));
 }

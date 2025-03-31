@@ -1,4 +1,5 @@
 #![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
 #![allow(clippy::map_entry)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::too_many_arguments)]
@@ -24,26 +25,45 @@ macro_rules! debug {
 fn main() {
     input! {
         n: usize, k: usize,
-        a: [Usize1; n],
     }
 
-    // ダブリング（基本形）
-    let mut dp = vec![vec![0; n]; 61];
-    dp[0] = a;
+    const LOGK: usize = 30;
 
-    for i in 1..=60 {
-        for j in 0..n {
+    // ダブリング
+    let mut dp = vec![vec![0; n + 1]; LOGK];
+    dp[0] = (0..=n).map(f).collect_vec();
+
+    for i in 1..LOGK {
+        for j in 0..=n {
             dp[i][j] = dp[i - 1][dp[i - 1][j]];
         }
     }
 
-    let mut cur = 0;
+    let mut ans = Vec::with_capacity(n);
 
-    for i in 0..=60 {
-        if k >> i & 1 > 0 {
-            cur = dp[i][cur];
+    for m in 1..=n {
+        let mut cur = m;
+
+        for i in 0..LOGK {
+            if k >> i & 1 > 0 {
+                cur = dp[i][cur];
+            }
         }
+
+        ans.push(cur);
     }
 
-    println!("{}", cur + 1);
+    println!("{}", ans.iter().join("\n"));
+}
+
+fn f(x: usize) -> usize {
+    let mut y = x;
+    let mut sum = 0;
+
+    while y > 0 {
+        sum += y % 10;
+        y /= 10;
+    }
+
+    x - sum
 }

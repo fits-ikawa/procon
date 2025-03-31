@@ -1,4 +1,5 @@
 #![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
 #![allow(clippy::map_entry)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::too_many_arguments)]
@@ -10,6 +11,7 @@ use num::integer::{Integer, Roots};
 use proconio::{marker::*, *};
 use std::cmp::{Ordering::*, Reverse};
 use std::collections::*;
+use std::ops::Add;
 use superslice::*;
 
 #[allow(unused_macros)]
@@ -23,27 +25,34 @@ macro_rules! debug {
 #[fastout]
 fn main() {
     input! {
-        n: usize, k: usize,
-        a: [Usize1; n],
+        n: usize, q: usize,
     }
 
-    // ダブリング（基本形）
-    let mut dp = vec![vec![0; n]; 61];
-    dp[0] = a;
+    use ac_library::{Additive, Segtree};
 
-    for i in 1..=60 {
-        for j in 0..n {
-            dp[i][j] = dp[i - 1][dp[i - 1][j]];
+    let mut seg = Segtree::<Additive<usize>>::new(n);
+
+    for _ in 0..q {
+        input! {
+            t: usize,
+        }
+
+        match t {
+            1 => {
+                input! {
+                    pos: Usize1, x: usize,
+                }
+
+                seg.set(pos, x);
+            }
+            2 => {
+                input! {
+                    l: Usize1, r: Usize1,
+                }
+
+                println!("{}", seg.prod(l..r));
+            }
+            _ => unreachable!(),
         }
     }
-
-    let mut cur = 0;
-
-    for i in 0..=60 {
-        if k >> i & 1 > 0 {
-            cur = dp[i][cur];
-        }
-    }
-
-    println!("{}", cur + 1);
 }

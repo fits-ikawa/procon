@@ -1,3 +1,58 @@
+#![allow(clippy::comparison_chain)]
+#![allow(clippy::collapsible_else_if)]
+#![allow(clippy::map_entry)]
+#![allow(clippy::needless_range_loop)]
+#![allow(clippy::too_many_arguments)]
+#![allow(unused_imports)]
+use itertools::*;
+use itertools_num::*;
+use maplit::*;
+use num::integer::{Integer, Roots};
+use proconio::{marker::*, *};
+use std::cmp::{Ordering::*, Reverse};
+use std::collections::*;
+use superslice::*;
+
+#[allow(unused_macros)]
+macro_rules! debug {
+    ($($a:expr),* $(,)*) => {
+        #[cfg(debug_assertions)]
+        eprintln!(concat!($("| ", stringify!($a), "={:?} "),*, "|"), $(&$a),*);
+    };
+}
+
+#[fastout]
+fn main() {
+    input! {
+        h: usize, w: usize, n: usize,
+        abcd: [(Usize1, Usize1, Usize1, Usize1); n],
+    }
+
+    let mut acc = mylib::Cumsum2D::new(h + 1, w + 1);
+
+    for (a, b, c, d) in abcd {
+        acc.add(a, b, 1);
+        acc.add(c + 1, b, -1);
+        acc.add(a, d + 1, -1);
+        acc.add(c + 1, d + 1, 1);
+    }
+
+    acc.build();
+
+    let mut ans = vec![vec![0; w]; h];
+
+    for i in 0..h {
+        for j in 0..w {
+            ans[i][j] = acc.get_cumulative(i + 1, j + 1);
+        }
+    }
+
+    println!(
+        "{}",
+        ans.iter().map(|line| line.iter().join(" ")).join("\n")
+    );
+}
+
 pub mod mylib {
     /// A 2D cumulative sum structure for efficient range sum queries.
     #[derive(Debug, Clone)]

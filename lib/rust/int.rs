@@ -1,9 +1,9 @@
-fn factorial(n: usize) -> usize {
+fn fact(n: usize) -> usize {
     (1..=n).product()
 }
 
-fn combination(n: usize, r: usize) -> usize {
-    assert!(n >= r);
+fn comb(n: usize, r: usize) -> usize {
+    debug_assert!(n >= r);
     let r = r.min(n - r);
     let mut result = 1;
     for i in 0..r {
@@ -12,16 +12,16 @@ fn combination(n: usize, r: usize) -> usize {
     result
 }
 
-fn repeated_combination(n: usize, r: usize) -> usize {
-    combination(n + r - 1, r)
+fn repcomb(n: usize, r: usize) -> usize {
+    comb(n + r - 1, r)
 }
 
-fn permutation(n: usize, r: usize) -> usize {
-    assert!(n >= r);
+fn perm(n: usize, r: usize) -> usize {
+    debug_assert!(n >= r);
     (n - r + 1..=n).product()
 }
 
-fn repeated_permutation(n: usize, r: usize) -> usize {
+fn repperm(n: usize, r: usize) -> usize {
     n.pow(r as u32)
 }
 
